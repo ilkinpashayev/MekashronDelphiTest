@@ -54,7 +54,7 @@ object Form1: TForm1
     Top = 90
     Width = 105
     Height = 25
-    Caption = 'Create Customers'
+    Caption = 'Insert into Callback'
     TabOrder = 0
     OnClick = createCustomersBtnClick
   end
@@ -71,7 +71,7 @@ object Form1: TForm1
     Top = 90
     Width = 137
     Height = 25
-    Caption = 'Query table send request'
+    Caption = 'Query table'
     TabOrder = 2
     OnClick = QryDataSendRequestBtnClick
   end

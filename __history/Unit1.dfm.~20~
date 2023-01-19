@@ -2,9 +2,10 @@ object Form1: TForm1
   Left = 0
   Top = 0
   BorderIcons = [biSystemMenu]
+  BorderStyle = bsSingle
   Caption = 'Mekashron CRM'
-  ClientHeight = 557
-  ClientWidth = 847
+  ClientHeight = 567
+  ClientWidth = 857
   Color = clBtnFace
   CustomTitleBar.CaptionAlignment = taCenter
   Font.Charset = DEFAULT_CHARSET
@@ -62,22 +63,43 @@ object Form1: TForm1
     Top = 192
     Width = 825
     Height = 357
+    ScrollBars = ssVertical
     TabOrder = 1
+  end
+  object QryDataSendRequestBtn: TButton
+    Left = 135
+    Top = 90
+    Width = 137
+    Height = 25
+    Caption = 'Query table send request'
+    TabOrder = 2
+    OnClick = QryDataSendRequestBtnClick
+  end
+  object newentrybtn: TButton
+    Left = 288
+    Top = 90
+    Width = 75
+    Height = 25
+    Caption = 'New Entry'
+    TabOrder = 3
+    OnClick = newentrybtnClick
   end
   object mysqlConnection: TFDConnection
     Params.Strings = (
-      'DriverID=MySQL')
+      'DriverID=MySQL'
+      'User_Name=root')
     Left = 520
     Top = 64
   end
   object FDPhysMySQLDriverLink1: TFDPhysMySQLDriverLink
+    VendorLib = 'C:\lib\l\libmysql\libmysql.dll'
     Left = 632
     Top = 64
   end
   object qryCallback: TFDQuery
     Connection = mysqlConnection
     SQL.Strings = (
-      'select * from callback where isExtracted=0')
+      'select * from callback')
     Left = 504
     Top = 128
   end
