@@ -1,0 +1,19 @@
+program MekashronCRM;
+
+uses
+  Vcl.Forms,
+  Unit1 in 'Unit1.pas' {Form1},
+  LogHelper in 'LogHelper.pas',
+  IniReaderClass in 'IniReaderClass.pas',
+  IBusinessAPI1 in 'IBusinessAPI1.pas',
+  NewEntityForm in 'NewEntityForm.pas' {newEntityFrm};
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TForm1, Form1);
+  Application.CreateForm(TnewEntityFrm, newEntityFrm);
+  Application.Run;
+end.

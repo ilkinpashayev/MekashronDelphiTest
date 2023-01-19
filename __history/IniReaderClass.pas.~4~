@@ -1,0 +1,33 @@
+unit IniReaderClass;
+
+interface
+uses Classes;
+
+type IniReaderHelper = class
+  public
+    class var
+      DriverId : string;
+      Server   : string;
+      Port     : string;
+      Database : string;
+      User_name: string;
+      Password : string;
+    Constructor Create; overload;
+  end;
+
+
+implementation
+
+constructor  IniReaderHelper.Create;
+begin
+  DriverId := 'MySQL';
+  Server   := '127.0.0.1';
+  Port     := '3306';
+  Database := 'mekashron';
+  User_Name:= 'root';
+  Password := 'root';
+
+
+end;
+
+end.

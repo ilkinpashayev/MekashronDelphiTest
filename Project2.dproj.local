@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+  <Transactions>
+    <Transaction>2023/01/17 05:47:45.075,=C:\Ilkin\Projects\Delphi\Unit1.pas</Transaction>
+    <Transaction>2023/01/17 06:01:04.109,=C:\Ilkin\Projects\Delphi\Unit2.pas</Transaction>
+    <Transaction>2023/01/17 06:06:38.901,C:\Ilkin\Projects\Delphi\MekashronCRM\Unit2.pas=C:\Ilkin\Projects\Delphi\Unit2.pas</Transaction>
+    <Transaction>2023/01/17 06:06:40.900,C:\Ilkin\Projects\Delphi\MekashronCRM\Unit1.pas=C:\Ilkin\Projects\Delphi\Unit1.pas</Transaction>
+    <Transaction>2023/01/17 06:06:40.900,C:\Ilkin\Projects\Delphi\MekashronCRM\Unit1.dfm=C:\Ilkin\Projects\Delphi\Unit1.dfm</Transaction>
+    <Transaction>2023/01/17 06:06:42.278,C:\Ilkin\Projects\Delphi\MekashronCRM\Project2.dproj=C:\Ilkin\Projects\Delphi\Project2.dproj</Transaction>
+  </Transactions>
+</BorlandProject>

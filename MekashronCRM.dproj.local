@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2023/01/17 05:47:45.000.075,=C:\Ilkin\Projects\Delphi\Unit1.pas</Transaction>
+    <Transaction>2023/01/17 06:01:04.000.109,=C:\Ilkin\Projects\Delphi\Unit2.pas</Transaction>
+    <Transaction>2023/01/17 06:06:38.000.901,C:\Ilkin\Projects\Delphi\MekashronCRM\Unit2.pas=C:\Ilkin\Projects\Delphi\Unit2.pas</Transaction>
+    <Transaction>2023/01/17 06:06:40.000.900,C:\Ilkin\Projects\Delphi\MekashronCRM\Unit1.pas=C:\Ilkin\Projects\Delphi\Unit1.pas</Transaction>
+    <Transaction>2023/01/17 06:06:40.000.900,C:\Ilkin\Projects\Delphi\MekashronCRM\Unit1.dfm=C:\Ilkin\Projects\Delphi\Unit1.dfm</Transaction>
+    <Transaction>2023/01/17 06:06:42.000.278,C:\Ilkin\Projects\Delphi\MekashronCRM\Project2.dproj=C:\Ilkin\Projects\Delphi\Project2.dproj</Transaction>
+    <Transaction>2023/01/17 06:06:55.000.775,C:\Ilkin\Projects\Delphi\MekashronCRM\MekashronCRM.dproj=C:\Ilkin\Projects\Delphi\MekashronCRM\Project2.dproj</Transaction>
+    <Transaction>2023/01/17 06:13:55.000.308,C:\Ilkin\Projects\Delphi\MekashronCRM\Unit2.pas=C:\Ilkin\Projects\Delphi\MekashronCRM\Helper.pas</Transaction>
+    <Transaction>2023/01/17 06:54:47.000.482,C:\Ilkin\Projects\Delphi\MekashronCRM\Helper.pas=C:\Ilkin\Projects\Delphi\MekashronCRM\LogHelper.pas</Transaction>
+    <Transaction>2023/01/17 13:15:23.000.119,=C:\Ilkin\Projects\Delphi\MekashronCRM\settings.ini</Transaction>
+    <Transaction>2023/01/17 13:21:16.000.009,=C:\Ilkin\Projects\Delphi\MekashronCRM\Unit2.pas</Transaction>
+    <Transaction>2023/01/17 13:21:42.000.728,C:\Ilkin\Projects\Delphi\MekashronCRM\Unit2.pas=C:\Ilkin\Projects\Delphi\MekashronCRM\IniReaderClass.pas</Transaction>
+    <Transaction>2023/01/17 23:28:23.000.713,=C:\Ilkin\Projects\Delphi\MekashronCRM\Unit2.pas</Transaction>
+    <Transaction>2023/01/17 23:29:44.000.621,C:\Ilkin\Projects\Delphi\MekashronCRM\TDBThread.pas=C:\Ilkin\Projects\Delphi\MekashronCRM\Unit2.pas</Transaction>
+    <Transaction>2023/01/17 23:30:39.000.110,C:\Ilkin\Projects\Delphi\MekashronCRM\TDBThreadClass.pas=C:\Ilkin\Projects\Delphi\MekashronCRM\TDBThread.pas</Transaction>
+    <Transaction>2023/01/18 08:48:01.000.491,=C:\Ilkin\Projects\Delphi\MekashronCRM\Unit2.pas</Transaction>
+    <Transaction>2023/01/18 08:48:26.000.163,C:\Ilkin\Projects\Delphi\MekashronCRM\FormUpdateClass.pas=C:\Ilkin\Projects\Delphi\MekashronCRM\Unit2.pas</Transaction>
+    <Transaction>2023/01/18 09:02:37.000.780,C:\Ilkin\Projects\Delphi\MekashronCRM\FormUpdateClass.pas=</Transaction>
+    <Transaction>2023/01/18 09:05:39.000.071,=C:\Ilkin\Projects\Delphi\MekashronCRM\FormUpdateClass.pas</Transaction>
+    <Transaction>2023/01/18 09:29:44.000.360,C:\Ilkin\Projects\Delphi\MekashronCRM\FormUpdateClass.pas=</Transaction>
+    <Transaction>2023/01/18 09:29:53.000.180,C:\Ilkin\Projects\Delphi\MekashronCRM\TDBThreadClass.pas=</Transaction>
+    <Transaction>2023/01/18 21:50:52.000.267,=C:\Ilkin\Projects\Delphi\MekashronCRM\IBusinessAPI1.pas</Transaction>
+    <Transaction>2023/01/18 23:26:02.000.990,=C:\Ilkin\Projects\Delphi\MekashronCRM\Unit2.pas</Transaction>
+    <Transaction>2023/01/18 23:26:26.000.557,C:\Ilkin\Projects\Delphi\MekashronCRM\Unit2.dfm=C:\Ilkin\Projects\Delphi\MekashronCRM\NewEntityForm.dfm</Transaction>
+    <Transaction>2023/01/18 23:26:26.000.557,C:\Ilkin\Projects\Delphi\MekashronCRM\Unit2.pas=C:\Ilkin\Projects\Delphi\MekashronCRM\NewEntityForm.pas</Transaction>
+    <Transaction>2023/01/19 07:55:15.284,=C:\Ilkin\Projects\Delphi\MekashronCRM\IBusinessAPI11.pas</Transaction>
+    <Transaction>2023/01/19 08:32:50.034,=C:\Ilkin\Projects\Delphi\MekashronCRM\Unit2.pas</Transaction>
+    <Transaction>2023/01/19 08:33:56.005,C:\Ilkin\Projects\Delphi\MekashronCRM\RequestErrorModel.pas=C:\Ilkin\Projects\Delphi\MekashronCRM\Unit2.pas</Transaction>
+    <Transaction>2023/01/19 08:48:43.609,C:\Ilkin\Projects\Delphi\MekashronCRM\ResponseModel.pas=C:\Ilkin\Projects\Delphi\MekashronCRM\RequestErrorModel.pas</Transaction>
+  </Transactions>
+</BorlandProject>

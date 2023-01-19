@@ -1,0 +1,22 @@
+unit Helper;
+
+interface
+
+uses Classes;
+
+type
+  MekashronHelper = class
+  public
+    function GetDatabasePath: string;
+
+  end;
+
+implementation
+
+function MekashronHelper.GetDatabasePath;
+
+begin
+  result := 'Test';
+end;
+
+end.

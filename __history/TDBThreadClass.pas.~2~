@@ -1,0 +1,26 @@
+unit TDBThreadClass;
+
+interface
+
+uses System.Classes,FormUpdateClass;
+
+type
+  TDBThread = class(TThread)
+  protected
+    procedure Execute; override;
+  end;
+
+var
+  Form1: TForm1;
+
+implementation
+
+procedure TDBThread.Execute;
+var
+  form1UpdateHelper :FormUpdateHelper ;
+begin
+  form1UpdateHelper.insertLog;
+end;
+
+end.
+

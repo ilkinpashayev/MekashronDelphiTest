@@ -1,0 +1,25 @@
+unit TDBThreadClass;
+
+interface
+
+uses System.Classes,Vcl.Forms, Unit1;
+
+type
+  TDBThread = class(TThread)
+  protected
+    procedure Execute; override;
+  end;
+
+var
+  Form1: TForm1;
+
+implementation
+
+procedure TDBThread.Execute;
+
+begin
+  Form1.eventLogMemo.Lines.Add('Thread execute');
+end;
+
+end.
+

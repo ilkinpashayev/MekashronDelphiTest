@@ -1,0 +1,84 @@
+object Form1: TForm1
+  Left = 0
+  Top = 0
+  BorderIcons = [biSystemMenu]
+  Caption = 'Mekashron CRM'
+  ClientHeight = 557
+  ClientWidth = 847
+  Color = clBtnFace
+  CustomTitleBar.CaptionAlignment = taCenter
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  Position = poDesktopCenter
+  OnCreate = FormCreate
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Label1: TLabel
+    Left = 8
+    Top = 8
+    Width = 432
+    Height = 76
+    Caption = 
+      'Click button to create new customers. Number of customers will b' +
+      'e in range 4-10 on random.  Created customers will be saved to l' +
+      'ocal databse, with different threads.  Later new customers would' +
+      ' be sent to CRM API'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+    WordWrap = True
+  end
+  object Label2: TLabel
+    Left = 8
+    Top = 160
+    Width = 70
+    Height = 19
+    Caption = 'Event Log'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+  end
+  object createCustomersBtn: TButton
+    Left = 8
+    Top = 90
+    Width = 105
+    Height = 25
+    Caption = 'Create Customers'
+    TabOrder = 0
+    OnClick = createCustomersBtnClick
+  end
+  object eventLogMemo: TMemo
+    Left = 8
+    Top = 192
+    Width = 825
+    Height = 357
+    TabOrder = 1
+  end
+  object mysqlConnection: TFDConnection
+    Params.Strings = (
+      'DriverID=MySQL')
+    Left = 520
+    Top = 64
+  end
+  object FDPhysMySQLDriverLink1: TFDPhysMySQLDriverLink
+    Left = 632
+    Top = 64
+  end
+  object qryCallback: TFDQuery
+    Connection = mysqlConnection
+    SQL.Strings = (
+      'select * from callback where isExtracted=0')
+    Left = 504
+    Top = 128
+  end
+end

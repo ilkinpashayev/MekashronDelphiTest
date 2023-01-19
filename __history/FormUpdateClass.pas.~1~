@@ -1,0 +1,24 @@
+unit FormUpdateClass;
+
+interface
+
+uses Classes,Unit1;
+type
+  FormUpdateHelper = class
+  public
+    procedure insertLog;
+  end;
+
+implementation
+
+procedure FormUpdateHelper.insertLog;
+var
+  form1: TForm1;
+begin
+  form1.eventLogMemo.Lines.Add('test');
+end;
+end.
+
+
+
+

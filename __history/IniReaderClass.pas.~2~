@@ -1,0 +1,20 @@
+unit IniReaderClass;
+
+interface
+uses Classes;
+
+type IniReaderHelper = class
+  public
+    name   : string;
+    Constructor Create; overload;
+  end;
+
+
+implementation
+
+constructor  IniReaderHelper.Create;
+begin
+  name :='Username Test';
+end;
+
+end.

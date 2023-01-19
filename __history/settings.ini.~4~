@@ -1,0 +1,7 @@
+[Setings]
+DrivetrId=MySQL
+Server=127.0.0.1
+Port=3306
+Database=mekashrondb
+User_Name=root
+Password=root

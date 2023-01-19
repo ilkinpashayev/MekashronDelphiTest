@@ -1,0 +1,63 @@
+unit NewEntityForm;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls,IBusinessAPI1;
+
+type
+  TnewEntityFrm = class(TForm)
+    Button1: TButton;
+    Label1: TLabel;
+    BusinessIDEdit: TEdit;
+    EntityIDEdit: TEdit;
+    Label2: TLabel;
+    UserNameEdit: TEdit;
+    UserNameLbl: TLabel;
+    PasswordOlEdit: TEdit;
+    Label3: TLabel;
+    Label4: TLabel;
+    EmailEdit: TEdit;
+    PasswordEdit: TEdit;
+    Label5: TLabel;
+    Label6: TLabel;
+    FirstNameEdit: TEdit;
+    LastNameEdit: TEdit;
+    Label7: TLabel;
+    Label8: TLabel;
+    MobileEdit: TEdit;
+    CountryISOEdit: TEdit;
+    Label9: TLabel;
+    procedure Button1Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  newEntityFrm: TnewEntityFrm;
+
+implementation
+
+{$R *.dfm}
+
+procedure TnewEntityFrm.Button1Click(Sender: TObject);
+var
+    soapClient : IBusinessAPI;
+begin
+         // <BusinessId xsi:type="xsd:int">1</BusinessId>
+        // <ol_EntityId xsi:type="xsd:int">1</ol_EntityId>
+        // <ol_UserName xsi:type="xsd:string">admin</ol_UserName>
+        // <ol_Password xsi:type="xsd:string">admin</ol_Password>
+        // <Email xsi:type="xsd:string">pashayev.ilkin1@gmail.com</Email>
+        // <Password xsi:type="xsd:string">admin</Password>
+        // <FirstName xsi:type="xsd:string">Ilkin</FirstName>
+        // <LastName xsi:type="xsd:string">Pashayev</LastName>
+        // <Mobile xsi:type="xsd:string">+99451900185</Mobile>
+        // <CountryISO xsi:type="xsd:string">IL</CountryISO>
+  // soapClient.Entity_Add(
+end;
+
+end.
