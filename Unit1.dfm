@@ -84,6 +84,15 @@ object Form1: TForm1
     TabOrder = 3
     OnClick = newentrybtnClick
   end
+  object TelemarketingAddButton: TButton
+    Left = 384
+    Top = 90
+    Width = 105
+    Height = 25
+    Caption = 'Add Telemarkeing'
+    TabOrder = 4
+    OnClick = TelemarketingAddButtonClick
+  end
   object mysqlConnection: TFDConnection
     Params.Strings = (
       'DriverID=MySQL'

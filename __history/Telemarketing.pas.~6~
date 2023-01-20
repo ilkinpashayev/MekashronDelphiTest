@@ -1,0 +1,53 @@
+unit Telemarketing;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.CheckLst,System.Generics.Collections;
+
+type
+  TTelemarketingForm = class(TForm)
+    CreateTelemarketingButton: TButton;
+    Label2: TLabel;
+    EntityNamesCombo: TComboBox;
+    UserNameLbl: TLabel;
+    UserNameEdit: TEdit;
+    Label3: TLabel;
+    PasswordOlEdit: TEdit;
+    TelemarketingUserList: TCheckListBox;
+    procedure TelemarketingUserListClickCheck(Sender: TObject);
+  public
+    class var
+      List : TList<Integer>;
+      EntityList : TList<Integer>;
+      SelectedList : TList<Integer>;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  TelemarketingForm: TTelemarketingForm;
+
+implementation
+
+{$R *.dfm}
+
+procedure TTelemarketingForm.TelemarketingUserListClickCheck(Sender: TObject);
+begin
+
+
+  if TelemarketingUserList.Checked[TelemarketingUserList.ItemIndex] then
+  begin
+    SelectedList.Add(TelemarketingUserList.ItemIndex) ;
+  end
+  else
+      SelectedList.Remove(TelemarketingUserList.ItemIndex)  ;
+
+  ShowMessage(inttostr(SelectedList.Count));
+
+end;
+
+end.

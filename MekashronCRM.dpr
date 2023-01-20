@@ -7,7 +7,9 @@ uses
   IniReaderClass in 'IniReaderClass.pas',
   IBusinessAPI1 in 'IBusinessAPI1.pas',
   NewEntityForm in 'NewEntityForm.pas' {newEntityFrm},
-  ResponseModel in 'ResponseModel.pas';
+  ResponseModel in 'ResponseModel.pas',
+  Telemarketing in 'Telemarketing.pas' {TelemarketingForm},
+  TelemarketingResponseModel in 'TelemarketingResponseModel.pas';
 
 {$R *.res}
 
@@ -16,5 +18,6 @@ begin
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TForm1, Form1);
   Application.CreateForm(TnewEntityFrm, newEntityFrm);
+  Application.CreateForm(TTelemarketingForm, TelemarketingForm);
   Application.Run;
 end.

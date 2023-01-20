@@ -10,7 +10,7 @@ uses
   FireDAC.Phys, FireDAC.VCLUI.Wait, Data.DB, FireDAC.Comp.Client,
   FireDAC.Phys.MySQLDef, FireDAC.Phys.MySQL,IniReaderClass, FireDAC.Stan.Param,
   FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.DApt, FireDAC.Comp.DataSet,DateUtils,TDBThreadClass,
-  Datasnap.DBClient, NewEntityForm,IBusinessAPI1;
+  Datasnap.DBClient, NewEntityForm,IBusinessAPI1,System.Generics.Collections,Telemarketing;
 
 type
   TForm1 = class(TForm)
@@ -23,6 +23,7 @@ type
     qryCallback: TFDQuery;
     QryDataSendRequestBtn: TButton;
     newentrybtn: TButton;
+    TelemarketingAddButton: TButton;
     procedure createCustomersBtnClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure connectDB;
@@ -31,6 +32,9 @@ type
     procedure selectCallbackData;
     procedure QryDataSendRequestBtnClick(Sender: TObject);
     procedure newentrybtnClick(Sender: TObject);
+    procedure getUsernameList(newentityform:TnewEntityFrm);
+    procedure TelemarketingAddButtonClick(Sender: TObject);
+    procedure getTelemarketingUsernameList(newTelemarketingform:TTelemarketingForm);
   private
     { Private declarations }
   public
@@ -58,6 +62,7 @@ var
   logMessage  : string;
   logHelper   : MekashronLogHelper;
 
+
 implementation
 
 {$R *.dfm}
@@ -66,8 +71,13 @@ var
   newEntity  : TnewEntityFrm;
   soapClient : IBusinessAPI;
 begin
+   if (mysqlConnection.State <>csConnected) then
+    begin
+      connectDB;
+    end;
 
   newEntity := TnewEntityFrm.Create(nil);
+  getUsernameList(newEntity);
   newEntity.ShowModal;
 
 end;
@@ -158,6 +168,57 @@ begin
     threadArray[I].Free
   end;
 end;
+procedure TForm1.getUsernameList(newentityform:TnewEntityFrm);
+begin
+    newentityform.EntityNamesCombo.Items.Clear;
+    newentityform.List.Clear;
+    qryCallback.SQL.Text := 'SELECT ol_username,entityid FROM mekashronbusiness.entities';
+    qryCallback.Open;
+    qryCallback.First;
+    newentityform.List :=TList<Integer>.Create;
+    while not qryCallback.eof do
+    begin
+      newentityform.EntityNamesCombo.Items.Add(
+      qryCallback.FieldByName('ol_username').AsString);
+      newentityform.List.Add(qryCallback.FieldByName('entityid').AsInteger) ;
+      qryCallback.Next;
+    end;
+end;
+procedure TForm1.getTelemarketingUsernameList(newTelemarketingform:TTelemarketingForm);
+begin
+    newTelemarketingform.TelemarketingUserList.Items.Clear;
+    newTelemarketingform.List :=TList<Integer>.Create;
+    newTelemarketingform.EntityList :=TList<Integer>.Create;
+    newTelemarketingform.SelectedList :=TList<Integer>.Create;
+    newTelemarketingform.List.Clear;
+    qryCallback.SQL.Text := 'select e.entityid, e.ol_username ' +
+                            'from entities e ' +
+                            'left join employees emp on (emp.Status<>0 or (DATE_ADD(emp.sync_modified_date, INTERVAL 24 HOUR)<utc_timestamp())) and emp.EntityId=e.EntityId ';
+    qryCallback.Open;
+    qryCallback.First;
+
+    while not qryCallback.eof do
+    begin
+      newTelemarketingform.TelemarketingUserList.Items.Add(qryCallback.FieldByName('ol_username').AsString);
+
+      newTelemarketingform.List.Add(qryCallback.FieldByName('entityid').AsInteger) ;
+      qryCallback.Next;
+    end;
+    qryCallback.Close;
+
+
+    qryCallback.SQL.Text := 'SELECT ol_username,entityid FROM mekashronbusiness.entities';
+    qryCallback.Open;
+    qryCallback.First;
+    while not qryCallback.eof do
+    begin
+      newTelemarketingform.EntityNamesCombo.Items.Add(
+      qryCallback.FieldByName('ol_username').AsString);
+      newTelemarketingform.EntityList.Add(qryCallback.FieldByName('entityid').AsInteger) ;
+      qryCallback.Next;
+    end;
+    qryCallback.Close;
+end;
 procedure TForm1.selectCallbackData;
 var
   I                : Integer;
@@ -175,6 +236,21 @@ begin
       Form1.qryCallback.Next;
     end;
 end;
+procedure TForm1.TelemarketingAddButtonClick(Sender: TObject);
+var
+  newTelemarketing  : TTelemarketingForm;
+  I : integer;
+begin
+   if (mysqlConnection.State <>csConnected) then
+    begin
+      connectDB;
+    end;
+  newTelemarketing := TTelemarketingForm.Create(nil);
+  newTelemarketing.TelemarketingUserList.Items.Clear;
+  getTelemarketingUsernameList(newTelemarketing);
+  newTelemarketing.ShowModal;
+end;
+
 procedure TForm1.createCustomersBtnClick(Sender: TObject);
 var
    logHelper        : MekashronLogHelper;

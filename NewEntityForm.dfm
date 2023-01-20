@@ -157,7 +157,7 @@ object newEntityFrm: TnewEntityFrm
     Visible = False
   end
   object CreateEntityButton: TButton
-    Left = 0
+    Left = 8
     Top = 8
     Width = 75
     Height = 25
@@ -173,20 +173,12 @@ object newEntityFrm: TnewEntityFrm
     TabOrder = 1
     Text = '1'
   end
-  object EntityIDEdit: TEdit
-    Left = 79
-    Top = 85
-    Width = 121
-    Height = 21
-    TabOrder = 2
-    Text = '1'
-  end
   object UserNameEdit: TEdit
     Left = 79
     Top = 117
     Width = 121
     Height = 21
-    TabOrder = 3
+    TabOrder = 2
     Text = 'admin'
   end
   object PasswordOlEdit: TEdit
@@ -195,7 +187,7 @@ object newEntityFrm: TnewEntityFrm
     Width = 121
     Height = 21
     PasswordChar = '*'
-    TabOrder = 4
+    TabOrder = 3
     Text = 'admin'
   end
   object EmailEdit: TEdit
@@ -203,7 +195,7 @@ object newEntityFrm: TnewEntityFrm
     Top = 182
     Width = 121
     Height = 21
-    TabOrder = 5
+    TabOrder = 4
     Text = 'pashayev.ilkin1@gmail.com'
   end
   object PasswordEdit: TEdit
@@ -212,7 +204,7 @@ object newEntityFrm: TnewEntityFrm
     Width = 121
     Height = 21
     PasswordChar = '*'
-    TabOrder = 6
+    TabOrder = 5
     Text = 'admin'
   end
   object FirstNameEdit: TEdit
@@ -220,7 +212,7 @@ object newEntityFrm: TnewEntityFrm
     Top = 85
     Width = 121
     Height = 21
-    TabOrder = 7
+    TabOrder = 6
     Text = 'Ilkin'
   end
   object LastNameEdit: TEdit
@@ -228,7 +220,7 @@ object newEntityFrm: TnewEntityFrm
     Top = 117
     Width = 121
     Height = 21
-    TabOrder = 8
+    TabOrder = 7
     Text = 'Pashayev'
   end
   object MobileEdit: TEdit
@@ -236,7 +228,7 @@ object newEntityFrm: TnewEntityFrm
     Top = 149
     Width = 121
     Height = 21
-    TabOrder = 9
+    TabOrder = 8
     Text = '+994519001290'
   end
   object CountryISOEdit: TEdit
@@ -244,8 +236,15 @@ object newEntityFrm: TnewEntityFrm
     Top = 182
     Width = 121
     Height = 21
-    TabOrder = 10
+    TabOrder = 9
     Text = 'IL'
+  end
+  object EntityNamesCombo: TComboBox
+    Left = 79
+    Top = 90
+    Width = 121
+    Height = 21
+    TabOrder = 10
   end
   object BusinessApi: THTTPRIO
     WSDLLocation = 

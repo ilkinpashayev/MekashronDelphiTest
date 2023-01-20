@@ -7,14 +7,13 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls,IBusinessAPI1,
   System.Net.URLClient, System.Net.HttpClient, Soap.SOAPHTTPTrans, Data.DB,
   Datasnap.DBClient, Soap.SOAPConn, Soap.InvokeRegistry, Soap.Rio,
-  Soap.SOAPHTTPClient,ResponseModel,Rest.Json;
+  Soap.SOAPHTTPClient,ResponseModel,Rest.Json,System.Generics.Collections;
 
 type
   TnewEntityFrm = class(TForm)
     CreateEntityButton: TButton;
     Label1: TLabel;
     BusinessIDEdit: TEdit;
-    EntityIDEdit: TEdit;
     Label2: TLabel;
     UserNameEdit: TEdit;
     UserNameLbl: TLabel;
@@ -34,7 +33,11 @@ type
     Label9: TLabel;
     BusinessApi: THTTPRIO;
     responseResultLabel: TLabel;
+    EntityNamesCombo: TComboBox;
     procedure CreateEntityButtonClick(Sender: TObject);
+  public
+    class var
+      List : TList<Integer>;
   private
     { Private declarations }
   public
@@ -57,8 +60,8 @@ var
     EntityAddresponse : string;
 begin
       EntityAddresponse :=   (BusinessApi as IBusinessAPI).Entity_Add(
-      strtoint(EntityIDEdit.Text),
-      UserNameEdit.Text,
+      List[EntityNamesCombo.ItemIndex],
+      EntityNamesCombo.Text,
       PasswordOlEdit.Text,
       strtoint(BusinessIDEdit.Text),
       0,
@@ -70,7 +73,6 @@ begin
       MobileEdit.Text,
       CountryISOEdit.Text,
       0 ) ;
-
 
       try
         var responseObj := TJson.JsonToObject<TResponseModel>(EntityAddresponse);
@@ -89,8 +91,6 @@ begin
       except
 
       end;
-
-
 end;
 
 end.
