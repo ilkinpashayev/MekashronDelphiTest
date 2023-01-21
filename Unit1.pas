@@ -10,7 +10,8 @@ uses
   FireDAC.Phys, FireDAC.VCLUI.Wait, Data.DB, FireDAC.Comp.Client,
   FireDAC.Phys.MySQLDef, FireDAC.Phys.MySQL,IniReaderClass, FireDAC.Stan.Param,
   FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.DApt, FireDAC.Comp.DataSet,DateUtils,TDBThreadClass,
-  Datasnap.DBClient, NewEntityForm,IBusinessAPI1,System.Generics.Collections,Telemarketing;
+  Datasnap.DBClient, NewEntityForm,IBusinessAPI1,System.Generics.Collections,Telemarketing,
+  Vcl.Menus,Settings;
 
 type
   TForm1 = class(TForm)
@@ -24,6 +25,8 @@ type
     QryDataSendRequestBtn: TButton;
     newentrybtn: TButton;
     TelemarketingAddButton: TButton;
+    MainMenu1: TMainMenu;
+    SettingsMenu: TMenuItem;
     procedure createCustomersBtnClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure connectDB;
@@ -35,6 +38,7 @@ type
     procedure getUsernameList(newentityform:TnewEntityFrm);
     procedure TelemarketingAddButtonClick(Sender: TObject);
     procedure getTelemarketingUsernameList(newTelemarketingform:TTelemarketingForm);
+    procedure SettingsMenuClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -76,9 +80,14 @@ begin
       connectDB;
     end;
 
+ if (mysqlConnection.State <>csConnected) then
+ begin
   newEntity := TnewEntityFrm.Create(nil);
   getUsernameList(newEntity);
   newEntity.ShowModal;
+ end;
+
+
 
 end;
 
@@ -111,7 +120,7 @@ begin
   if (mysqlConnection.State <> csConnected) then
   begin
      createCustomersBtn.Enabled:=true;
-     logMessage := logHelper.generateLogMessage('DatabseConnection','Couldn''t connect to database, try again');
+     logMessage := logHelper.generateLogMessage('DatabseConnection','Couldn''t connect to database check setting then  try again');
      eventLogMemo.Lines.Add(logMessage);
      Exit;
   end
@@ -146,7 +155,9 @@ begin
   begin
     connectDB;
   end;
-  selectCallbackData;
+
+  if (mysqlConnection.State = csConnected) then
+    selectCallbackData;
 end;
 
 procedure TForm1.createCustomerThreads(newCustomerCount : Integer);
@@ -236,6 +247,15 @@ begin
       Form1.qryCallback.Next;
     end;
 end;
+procedure TForm1.SettingsMenuClick(Sender: TObject);
+var
+  settingsForm : TSettingsForm;
+begin
+  settingsForm := TSettingsForm.Create(nil);
+
+
+end;
+
 procedure TForm1.TelemarketingAddButtonClick(Sender: TObject);
 var
   newTelemarketing  : TTelemarketingForm;
@@ -245,10 +265,13 @@ begin
     begin
       connectDB;
     end;
-  newTelemarketing := TTelemarketingForm.Create(nil);
-  newTelemarketing.TelemarketingUserList.Items.Clear;
-  getTelemarketingUsernameList(newTelemarketing);
-  newTelemarketing.ShowModal;
+  if (mysqlConnection.State =csConnected) then
+  begin
+    newTelemarketing := TTelemarketingForm.Create(nil);
+    newTelemarketing.TelemarketingUserList.Items.Clear;
+    getTelemarketingUsernameList(newTelemarketing);
+    newTelemarketing.ShowModal;
+  end;
 end;
 
 procedure TForm1.createCustomersBtnClick(Sender: TObject);

@@ -141,6 +141,10 @@
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="TelemarketingResponseModel.pas"/>
+        <DCCReference Include="Settings.pas">
+            <Form>SettingsForm</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <None Include="settings.ini"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>

@@ -13,6 +13,7 @@ object Form1: TForm1
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
+  Menu = MainMenu1
   OldCreateOrder = False
   Position = poDesktopCenter
   OnCreate = FormCreate
@@ -111,5 +112,13 @@ object Form1: TForm1
       'select * from callback')
     Left = 504
     Top = 128
+  end
+  object MainMenu1: TMainMenu
+    Left = 344
+    Top = 152
+    object SettingsMenu: TMenuItem
+      Caption = 'Settings'
+      OnClick = SettingsMenuClick
+    end
   end
 end

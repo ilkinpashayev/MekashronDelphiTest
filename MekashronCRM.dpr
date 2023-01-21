@@ -9,7 +9,8 @@ uses
   NewEntityForm in 'NewEntityForm.pas' {newEntityFrm},
   ResponseModel in 'ResponseModel.pas',
   Telemarketing in 'Telemarketing.pas' {TelemarketingForm},
-  TelemarketingResponseModel in 'TelemarketingResponseModel.pas';
+  TelemarketingResponseModel in 'TelemarketingResponseModel.pas',
+  Settings in 'Settings.pas' {SettingsForm};
 
 {$R *.res}
 
@@ -19,5 +20,6 @@ begin
   Application.CreateForm(TForm1, Form1);
   Application.CreateForm(TnewEntityFrm, newEntityFrm);
   Application.CreateForm(TTelemarketingForm, TelemarketingForm);
+  Application.CreateForm(TSettingsForm, SettingsForm);
   Application.Run;
 end.
