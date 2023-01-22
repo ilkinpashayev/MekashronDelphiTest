@@ -20,6 +20,7 @@ type
     TelemarketingUserList: TCheckListBox;
     BusinessApi: THTTPRIO;
     responselabel: TLabel;
+    memolog: TMemo;
     procedure TelemarketingUserListClickCheck(Sender: TObject);
     procedure CreateTelemarketingButtonClick(Sender: TObject);
   public
@@ -48,24 +49,25 @@ var
     TelemarketingAddresponse : string;
     users : IBusinessAPI1.ArrayOfInt;
     strValue : string;
+    entityid : Integer;
 begin
-if (SelectedList.Count >0) then
-  begin
-     SetLength(users,SelectedList.Count);
-     for I := 0 to SelectedList.Count-1 do
+  try
+    if (SelectedList.Count >0) then
+    begin
+      SetLength(users,SelectedList.Count);
+      for I := 0 to SelectedList.Count-1 do
          users[I] := SelectedList[I];
 
-  TelemarketingAddresponse :=   (BusinessApi as IBusinessAPI).Telemarketing_add(
-    List[EntityNamesCombo.ItemIndex],
-    UserNameEdit.Text,
-    PasswordOlEdit.Text,
-    0,
-    users
-  );
-
-       try
-        var responseObj := TJson.JsonToObject<TTelemarketingResponseModel>(TelemarketingAddresponse);
-        if (responseObj.ResultCode = 0) then
+      entityid:=List[EntityNamesCombo.ItemIndex];
+      TelemarketingAddresponse :=   (BusinessApi as IBusinessAPI).Telemarketing_add(
+        entityid,
+        UserNameEdit.Text,
+        PasswordOlEdit.Text,
+        0,
+        users
+      );
+      var responseObj := TJson.JsonToObject<TTelemarketingResponseModel>(TelemarketingAddresponse);
+      if (responseObj.ResultCode = 0) then
         begin
           strValue := 'Telemarketing had been created successfully';
           responseLabel.Caption :=strValue;
@@ -77,14 +79,15 @@ if (SelectedList.Count >0) then
           responseLabel.Caption :=strValue;
           responseLabel.Visible :=true;
         end;
-      except
-
+    end;
+  except
+    on E : Exception do
+      begin
+        memolog.Lines.add(E.ClassName+' '+E.Message);
+        memolog.Visible :=true;
       end;
+    end;
 
-
-
-
-  end;
 end;
 
 procedure TTelemarketingForm.TelemarketingUserListClickCheck(Sender: TObject);

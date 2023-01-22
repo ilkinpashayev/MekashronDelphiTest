@@ -13,6 +13,7 @@ type IniReaderHelper = class
       User_name: string;
       Password : string;
       VendorLib: string;
+      Wsdl     : string;
     Constructor Create; overload;
   end;
 
@@ -28,13 +29,15 @@ var
   UserNameIni : string;
   PasswordIni : string;
   VendorLibIni: string;
+  WsdlIni     : string;
   appINI : TIniFile;
 begin
   DriverIdIni := '';
   ServerIni   := '';
   PortIni     := '';
   DatabaseIni := '';
-  UserNameIni  := '';
+  UserNameIni := '';
+  WsdlIni     :='';
   try
      appINI      := TIniFile.Create(ExtractFilePath(Application.ExeName) + 'settings.ini');
      DriverIdIni := appINI.ReadString('Param','DriverId','');
@@ -44,6 +47,7 @@ begin
      UserNameIni := appINI.ReadString('Param','User_Name','');
      PasswordIni := appINI.ReadString('Param','Password','');
      VendorLibIni:= appINI.ReadString('Param','VendorLib','');
+     WsdlIni     := appINI.ReadString('Param','Wsdl','');
   finally
      appINI.Free;
   end;
@@ -55,6 +59,7 @@ begin
   User_Name:= UserNameIni;
   Password := PasswordIni;
   VendorLib:= VendorLibIni;
+  Wsdl     := WsdlIni;
 
 end;
 

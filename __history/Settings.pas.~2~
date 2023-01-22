@@ -1,0 +1,46 @@
+unit Settings;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls;
+
+type
+  TSettingsForm = class(TForm)
+    Button1: TButton;
+    SettingsMemo: TMemo;
+    procedure Button1Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  SettingsForm: TSettingsForm;
+
+implementation
+
+{$R *.dfm}
+
+procedure TSettingsForm.Button1Click(Sender: TObject);
+begin
+ if FileExists('settings.ini') then
+    ShowMessage('File already exists!')
+  else
+    begin
+       SettingsMemo.Lines.Add('[Param]');
+       SettingsMemo.Lines.Add('DriverId=MySQL');
+       SettingsMemo.Lines.Add('Server=127.0.0.1');
+       SettingsMemo.Lines.Add('Port=3306');
+       SettingsMemo.Lines.Add('Database=mekashron');
+       SettingsMemo.Lines.Add('User_Name=root');
+       SettingsMemo.Lines.Add('Password=');
+       SettingsMemo.Lines.Add('VendorLib = libmysql.dll');
+       SettingsMemo.Lines.Add('Wsdl=IBusinessAPI.xml');
+
+    end;
+end;
+
+end.

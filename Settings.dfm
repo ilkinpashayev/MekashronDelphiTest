@@ -20,10 +20,11 @@ object SettingsForm: TSettingsForm
   object Button1: TButton
     Left = 8
     Top = 8
-    Width = 97
+    Width = 121
     Height = 25
-    Caption = 'Save Settngs file'
+    Caption = 'Load  settings file'
     TabOrder = 0
+    OnClick = Button1Click
   end
   object SettingsMemo: TMemo
     Left = 0
@@ -31,5 +32,23 @@ object SettingsForm: TSettingsForm
     Width = 448
     Height = 163
     TabOrder = 1
+  end
+  object Button2: TButton
+    Left = 135
+    Top = 8
+    Width = 170
+    Height = 25
+    Caption = 'Generate default settings file'
+    TabOrder = 2
+    OnClick = Button2Click
+  end
+  object Button3: TButton
+    Left = 311
+    Top = 9
+    Width = 130
+    Height = 25
+    Caption = 'Save settings file'
+    TabOrder = 3
+    OnClick = Button3Click
   end
 end

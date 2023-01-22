@@ -77,7 +77,7 @@ object Form1: TForm1
     OnClick = QryDataSendRequestBtnClick
   end
   object newentrybtn: TButton
-    Left = 288
+    Left = 296
     Top = 90
     Width = 75
     Height = 25

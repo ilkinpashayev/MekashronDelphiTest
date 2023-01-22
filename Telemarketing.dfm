@@ -116,12 +116,18 @@ object TelemarketingForm: TTelemarketingForm
       '0')
     TabOrder = 4
   end
+  object memolog: TMemo
+    Left = 89
+    Top = 8
+    Width = 360
+    Height = 28
+    BorderStyle = bsNone
+    Color = clBtnFace
+    ScrollBars = ssVertical
+    TabOrder = 5
+    Visible = False
+  end
   object BusinessApi: THTTPRIO
-    WSDLLocation = 
-      'C:\Ilkin\Projects\Delphi\MekashronCRM\Win32\Debug\IBusinessAPI.x' +
-      'ml'
-    Service = 'IBusinessAPIservice'
-    Port = 'IBusinessAPIPort'
     Converter.Options = [soSendMultiRefObj, soTryAllSchema, soRootRefNodesToBody, soCacheMimeResponse, soUTF8EncodeXML]
     Left = 68
     Top = 160

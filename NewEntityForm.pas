@@ -14,7 +14,6 @@ type
     CreateEntityButton: TButton;
     Label1: TLabel;
     BusinessIDEdit: TEdit;
-    Label2: TLabel;
     UserNameEdit: TEdit;
     UserNameLbl: TLabel;
     PasswordOlEdit: TEdit;
@@ -32,8 +31,9 @@ type
     CountryISOEdit: TEdit;
     Label9: TLabel;
     BusinessApi: THTTPRIO;
-    responseResultLabel: TLabel;
     EntityNamesCombo: TComboBox;
+    Label2: TLabel;
+    memolog: TMemo;
     procedure CreateEntityButtonClick(Sender: TObject);
   public
     class var
@@ -58,38 +58,47 @@ var
     I           : Integer;
     strValue    : string;
     EntityAddresponse : string;
+    entityid     : Integer;
 begin
-      EntityAddresponse :=   (BusinessApi as IBusinessAPI).Entity_Add(
-      List[EntityNamesCombo.ItemIndex],
-      EntityNamesCombo.Text,
-      PasswordOlEdit.Text,
-      strtoint(BusinessIDEdit.Text),
-      0,
-      0,
-      EmailEdit.Text,
-      PasswordEdit.Text,
-      FirstNameEdit.Text,
-      LastNameEdit.Text,
-      MobileEdit.Text,
-      CountryISOEdit.Text,
-      0 ) ;
+
 
       try
+        memolog.Lines.Clear;
+           entityid := List[EntityNamesCombo.ItemIndex];
+        EntityAddresponse :=   (BusinessApi as IBusinessAPI).Entity_Add(
+            entityid,
+            UserNameEdit.Text,
+            PasswordOlEdit.Text,
+            strtoint(BusinessIDEdit.Text),
+            0,
+            0,
+            EmailEdit.Text,
+            PasswordEdit.Text,
+            FirstNameEdit.Text,
+            LastNameEdit.Text,
+            MobileEdit.Text,
+            CountryISOEdit.Text,
+            0 ) ;
         var responseObj := TJson.JsonToObject<TResponseModel>(EntityAddresponse);
         if (responseObj.ResultCode = 0) then
         begin
           strValue := 'Entity had been created sucessfully. New Entity ID: '+inttostr(responseObj.EntityId);
-          responseResultLabel.Caption :=strValue;
-          responseResultLabel.Visible :=true;
+          memolog.Lines.add(strValue);
+          memolog.Visible :=true;
         end
         else
         begin
           strValue := 'Something went wrong: '+responseObj.ResultMessage;
-          responseResultLabel.Caption :=strValue;
-          responseResultLabel.Visible :=true;
+          memolog.Lines.add(strValue);
+          memolog.Visible :=true;
         end;
       except
+         on E : Exception do
+        begin
 
+          memolog.Lines.add(E.ClassName+' '+E.Message);
+          memolog.Visible :=true;
+        end;
       end;
 end;
 

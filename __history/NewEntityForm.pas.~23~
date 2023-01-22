@@ -1,0 +1,106 @@
+unit NewEntityForm;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls,IBusinessAPI1,
+  System.Net.URLClient, System.Net.HttpClient, Soap.SOAPHTTPTrans, Data.DB,
+  Datasnap.DBClient, Soap.SOAPConn, Soap.InvokeRegistry, Soap.Rio,
+  Soap.SOAPHTTPClient,ResponseModel,Rest.Json,System.Generics.Collections;
+
+type
+  TnewEntityFrm = class(TForm)
+    CreateEntityButton: TButton;
+    Label1: TLabel;
+    BusinessIDEdit: TEdit;
+    UserNameEdit: TEdit;
+    UserNameLbl: TLabel;
+    PasswordOlEdit: TEdit;
+    Label3: TLabel;
+    Label4: TLabel;
+    EmailEdit: TEdit;
+    PasswordEdit: TEdit;
+    Label5: TLabel;
+    Label6: TLabel;
+    FirstNameEdit: TEdit;
+    LastNameEdit: TEdit;
+    Label7: TLabel;
+    Label8: TLabel;
+    MobileEdit: TEdit;
+    CountryISOEdit: TEdit;
+    Label9: TLabel;
+    BusinessApi: THTTPRIO;
+    responseResultLabel: TLabel;
+    procedure CreateEntityButtonClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+  public
+    class var
+      List : TList<Integer>;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  newEntityFrm: TnewEntityFrm;
+
+implementation
+
+{$R *.dfm}
+
+procedure TnewEntityFrm.CreateEntityButtonClick(Sender: TObject);
+var
+    soapClient2 : IBusinessAPI;
+    EntityIDInt : Integer ;
+    I           : Integer;
+    strValue    : string;
+    EntityAddresponse : string;
+begin
+
+
+      try
+        EntityAddresponse :=   (BusinessApi as IBusinessAPI).Entity_Add(
+            0,
+            UserNameEdit.Text,
+            PasswordOlEdit.Text,
+            strtoint(BusinessIDEdit.Text),
+            0,
+            2,
+            EmailEdit.Text,
+            PasswordEdit.Text,
+            FirstNameEdit.Text,
+            LastNameEdit.Text,
+            MobileEdit.Text,
+            CountryISOEdit.Text,
+            0 ) ;
+        var responseObj := TJson.JsonToObject<TResponseModel>(EntityAddresponse);
+        if (responseObj.ResultCode = 0) then
+        begin
+          strValue := 'Entity had been created sucessfully. New Entity ID: '+inttostr(responseObj.EntityId);
+          responseResultLabel.Caption :=strValue;
+          responseResultLabel.Visible :=true;
+        end
+        else
+        begin
+          strValue := 'Something went wrong: '+responseObj.ResultMessage;
+          responseResultLabel.Caption :=strValue;
+          responseResultLabel.Visible :=true;
+        end;
+      except
+         on E : Exception do
+        begin
+          ShowMessage(E.ClassName+' '+E.Message);
+          responseResultLabel.Caption :=E.ClassName+' '+E.Message;
+          responseResultLabel.Visible :=true;
+        end;
+      end;
+end;
+
+procedure TnewEntityFrm.FormCreate(Sender: TObject);
+begin
+responseResultLabel.Width :=9;
+end;
+
+end.

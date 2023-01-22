@@ -4,8 +4,8 @@ object newEntityFrm: TnewEntityFrm
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = 'Create New Entity'
-  ClientHeight = 211
-  ClientWidth = 456
+  ClientHeight = 200
+  ClientWidth = 471
   Color = clBtnFace
   CustomTitleBar.CaptionAlignment = taCenter
   Font.Charset = DEFAULT_CHARSET
@@ -19,7 +19,7 @@ object newEntityFrm: TnewEntityFrm
   TextHeight = 13
   object Label1: TLabel
     Left = 8
-    Top = 56
+    Top = 45
     Width = 65
     Height = 13
     Caption = 'Business ID'
@@ -30,22 +30,9 @@ object newEntityFrm: TnewEntityFrm
     Font.Style = [fsBold]
     ParentFont = False
   end
-  object Label2: TLabel
-    Left = 8
-    Top = 88
-    Width = 49
-    Height = 13
-    Caption = 'Entity ID'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'Tahoma'
-    Font.Style = [fsBold]
-    ParentFont = False
-  end
   object UserNameLbl: TLabel
     Left = 8
-    Top = 120
+    Top = 109
     Width = 61
     Height = 13
     Caption = 'User Name'
@@ -58,7 +45,7 @@ object newEntityFrm: TnewEntityFrm
   end
   object Label3: TLabel
     Left = 8
-    Top = 152
+    Top = 141
     Width = 54
     Height = 13
     Caption = 'Password'
@@ -71,7 +58,7 @@ object newEntityFrm: TnewEntityFrm
   end
   object Label4: TLabel
     Left = 8
-    Top = 184
+    Top = 173
     Width = 30
     Height = 13
     Caption = 'Email'
@@ -84,7 +71,7 @@ object newEntityFrm: TnewEntityFrm
   end
   object Label5: TLabel
     Left = 240
-    Top = 56
+    Top = 45
     Width = 54
     Height = 13
     Caption = 'Password'
@@ -97,7 +84,7 @@ object newEntityFrm: TnewEntityFrm
   end
   object Label6: TLabel
     Left = 240
-    Top = 88
+    Top = 77
     Width = 60
     Height = 13
     Caption = 'First Name'
@@ -110,7 +97,7 @@ object newEntityFrm: TnewEntityFrm
   end
   object Label7: TLabel
     Left = 240
-    Top = 120
+    Top = 109
     Width = 59
     Height = 13
     Caption = 'Last Name'
@@ -123,7 +110,7 @@ object newEntityFrm: TnewEntityFrm
   end
   object Label8: TLabel
     Left = 240
-    Top = 152
+    Top = 141
     Width = 37
     Height = 13
     Caption = 'Mobile'
@@ -136,7 +123,7 @@ object newEntityFrm: TnewEntityFrm
   end
   object Label9: TLabel
     Left = 240
-    Top = 184
+    Top = 173
     Width = 65
     Height = 13
     Caption = 'CountryISO'
@@ -147,14 +134,18 @@ object newEntityFrm: TnewEntityFrm
     Font.Style = [fsBold]
     ParentFont = False
   end
-  object responseResultLabel: TLabel
-    Left = 96
-    Top = 13
-    Width = 3
+  object Label2: TLabel
+    Left = 9
+    Top = 80
+    Width = 36
     Height = 13
-    Color = clSilver
-    ParentColor = False
-    Visible = False
+    Caption = 'Entity:'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentFont = False
   end
   object CreateEntityButton: TButton
     Left = 8
@@ -167,7 +158,7 @@ object newEntityFrm: TnewEntityFrm
   end
   object BusinessIDEdit: TEdit
     Left = 79
-    Top = 53
+    Top = 42
     Width = 121
     Height = 21
     TabOrder = 1
@@ -175,7 +166,7 @@ object newEntityFrm: TnewEntityFrm
   end
   object UserNameEdit: TEdit
     Left = 79
-    Top = 117
+    Top = 106
     Width = 121
     Height = 21
     TabOrder = 2
@@ -183,7 +174,7 @@ object newEntityFrm: TnewEntityFrm
   end
   object PasswordOlEdit: TEdit
     Left = 79
-    Top = 149
+    Top = 138
     Width = 121
     Height = 21
     PasswordChar = '*'
@@ -192,7 +183,7 @@ object newEntityFrm: TnewEntityFrm
   end
   object EmailEdit: TEdit
     Left = 79
-    Top = 182
+    Top = 171
     Width = 121
     Height = 21
     TabOrder = 4
@@ -200,7 +191,7 @@ object newEntityFrm: TnewEntityFrm
   end
   object PasswordEdit: TEdit
     Left = 311
-    Top = 53
+    Top = 42
     Width = 121
     Height = 21
     PasswordChar = '*'
@@ -209,7 +200,7 @@ object newEntityFrm: TnewEntityFrm
   end
   object FirstNameEdit: TEdit
     Left = 311
-    Top = 85
+    Top = 74
     Width = 121
     Height = 21
     TabOrder = 6
@@ -217,7 +208,7 @@ object newEntityFrm: TnewEntityFrm
   end
   object LastNameEdit: TEdit
     Left = 311
-    Top = 117
+    Top = 106
     Width = 121
     Height = 21
     TabOrder = 7
@@ -225,7 +216,7 @@ object newEntityFrm: TnewEntityFrm
   end
   object MobileEdit: TEdit
     Left = 311
-    Top = 149
+    Top = 138
     Width = 121
     Height = 21
     TabOrder = 8
@@ -233,27 +224,35 @@ object newEntityFrm: TnewEntityFrm
   end
   object CountryISOEdit: TEdit
     Left = 311
-    Top = 182
+    Top = 171
     Width = 121
     Height = 21
     TabOrder = 9
     Text = 'IL'
   end
   object EntityNamesCombo: TComboBox
-    Left = 79
-    Top = 90
-    Width = 121
+    Left = 80
+    Top = 77
+    Width = 120
     Height = 21
     TabOrder = 10
   end
+  object memolog: TMemo
+    Left = 89
+    Top = 8
+    Width = 360
+    Height = 28
+    BorderStyle = bsNone
+    Color = clBtnFace
+    ScrollBars = ssVertical
+    TabOrder = 11
+    Visible = False
+  end
   object BusinessApi: THTTPRIO
-    WSDLLocation = 
-      'C:\Ilkin\Projects\Delphi\MekashronCRM\Win32\Debug\IBusinessAPI.x' +
-      'ml'
     Service = 'IBusinessAPIservice'
     Port = 'IBusinessAPIPort'
     Converter.Options = [soSendMultiRefObj, soTryAllSchema, soRootRefNodesToBody, soCacheMimeResponse, soUTF8EncodeXML]
     Left = 440
-    Top = 168
+    Top = 152
   end
 end
