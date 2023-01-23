@@ -37,13 +37,11 @@ begin
   else
     begin
        SettingsMemo.Lines.Add('[Param]');
-       SettingsMemo.Lines.Add('DriverId=MySQL');
        SettingsMemo.Lines.Add('Server=127.0.0.1');
        SettingsMemo.Lines.Add('Port=3306');
        SettingsMemo.Lines.Add('Database=mekashron');
        SettingsMemo.Lines.Add('User_Name=root');
        SettingsMemo.Lines.Add('Password=');
-       SettingsMemo.Lines.Add('VendorLib = libmysql.dll');
        SettingsMemo.Lines.Add('Wsdl=IBusinessAPI.xml');
 
     end;
@@ -58,13 +56,11 @@ begin
   try
     SettingsMemo.Lines.Clear;
     SettingsMemo.Lines.Add('[Param]');
-    SettingsMemo.Lines.Add('DriverId=MySQL');
     SettingsMemo.Lines.Add('Server=127.0.0.1');
     SettingsMemo.Lines.Add('Port=3306');
     SettingsMemo.Lines.Add('Database=mekashron');
     SettingsMemo.Lines.Add('User_Name=root');
     SettingsMemo.Lines.Add('Password=');
-    SettingsMemo.Lines.Add('VendorLib = libmysql.dll');
     SettingsMemo.Lines.Add('Wsdl=IBusinessAPI.xml');
     SettingsMemo.Lines.SaveToFile('settings.ini');
     ShowMessage('Default ini file created');

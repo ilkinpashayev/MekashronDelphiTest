@@ -1,11 +1,11 @@
 // ************************************************************************ //
 // The types declared in this file were generated from data read from the
 // WSDL File described below:
-// WSDL     : http://localhost:33322/wsdl/IBusinessAPI/wsdl/IBusinessAPI
-//  >Import : http://localhost:33322/wsdl/IBusinessAPI/wsdl/IBusinessAPI>0
-//  >Import : http://localhost:33322/wsdl/IBusinessAPI/wsdl/IBusinessAPI>1
+// WSDL     : http://127.0.0.1:33322/wsdl/IBusinessAPI/wsdl/IBusinessAPI
+//  >Import : http://127.0.0.1:33322/wsdl/IBusinessAPI/wsdl/IBusinessAPI>0
+//  >Import : http://127.0.0.1:33322/wsdl/IBusinessAPI/wsdl/IBusinessAPI>1
 // Version  : 1.0
-// (1/18/2023 9:50:52 PM - - $Rev: 103843 $)
+// (1/23/2023 9:08:04 AM - - $Rev: 103843 $)
 // ************************************************************************ //
 
 unit IBusinessAPI1;
@@ -43,7 +43,7 @@ type
   // binding   : IBusinessAPIbinding
   // service   : IBusinessAPIservice
   // port      : IBusinessAPIPort
-  // URL       : http://localhost:33322/soap/IBusinessAPI
+  // URL       : http://127.0.0.1:33322/soap/IBusinessAPI
   // ************************************************************************ //
   IBusinessAPI = interface(IInvokable)
   ['{FC4260E4-8538-A2CD-8D30-5C86FF7E21B7}']
@@ -69,8 +69,8 @@ type
                             const ImageFields: ArrayOfString; const ImageValues: ArrayOfString): string; stdcall;
     function  Sales_Orders_Update(const ol_EntityID: Integer; const ol_Username: string; const ol_Password: string; const orderId: Integer; const BusinessId: Integer; const Employee_EntityId: Integer; 
                                   const NamesArray: ArrayOfString; const ValuesArray: ArrayOfString): string; stdcall;
-    function  Sales_Orders_Get(const ol_EntityID: Integer; const ol_Username: string; const ol_Password: string; const BusinessId: Integer; const FilterFields: ArrayOfString; const FilterValues: ArrayOfString; 
-                               const LimitFrom: Integer; const LimitCount: Integer): string; stdcall;
+    function  Sales_Orders_Get(const ol_EntityID: Integer; const ol_Username: string; const ol_Password: string; const BusinessId: Integer; const Fields: ArrayOfString; const FilterFields: ArrayOfString; 
+                               const FilterValues: ArrayOfString; const LimitFrom: Integer; const LimitCount: Integer): string; stdcall;
     function  Sales_Orders_Product_Update(const ol_EntityID: Integer; const ol_Username: string; const ol_Password: string; const order_productId: Integer; const BusinessId: Integer; const EntityId: Integer; 
                                           const NamesArray: ArrayOfString; const ValuesArray: ArrayOfString): string; stdcall;
     function  Sales_Orders_Product_Get(const ol_EntityID: Integer; const ol_Username: string; const ol_Password: string; const BusinessId: Integer; const Fields: ArrayOfString; const FilterFields: ArrayOfString; 
@@ -205,10 +205,24 @@ type
                                   const ValuesArray: ArrayOfString; const FileData: ArrayOfByte): string; stdcall;
     function  Tasks_Candidates_Get(const ol_EntityID: Integer; const ol_Username: string; const ol_Password: string; const taskID: Integer; const Fields: ArrayOfString; const FilterFields: ArrayOfString; 
                                    const FilterValues: ArrayOfString; const LimitFrom: Integer; const LimitCount: Integer): string; stdcall;
-    function  Tasks_Candidates_Update(const ol_EntityID: Integer; const ol_Username: string; const ol_Password: string; const TaskId: Integer; const entity_employeeID: Integer; const NamesArray: ArrayOfString; 
-                                      const ValuesArray: ArrayOfString): string; stdcall;
-    function  Tasks_Update(const ol_EntityID: Integer; const ol_Username: string; const ol_Password: string; const TaskId: Integer; const NamesArray: ArrayOfString; const ValuesArray: ArrayOfString
-                           ): string; stdcall;
+    function  Tasks_Candidates_Update(const ol_EntityID: Integer; const ol_Username: string; const ol_Password: string; const BusinessId: Integer; const TaskId: Integer; const entity_employeeID: Integer; 
+                                      const NamesArray: ArrayOfString; const ValuesArray: ArrayOfString): string; stdcall;
+    function  Tasks_Update(const ol_EntityID: Integer; const ol_Username: string; const ol_Password: string; const TaskId: Integer; const SpecIds: ArrayOfInt; const NamesArray: ArrayOfString; 
+                           const ValuesArray: ArrayOfString): string; stdcall;
+    function  Entities_Address_Update(const ol_EntityID: Integer; const ol_Username: string; const ol_Password: string; const AddressId: Integer; const NamesArray: ArrayOfString; const ValuesArray: ArrayOfString
+                                      ): string; stdcall;
+    function  Entities_Address_Get(const ol_EntityID: Integer; const ol_Username: string; const ol_Password: string; const BusinessId: Integer; const Fields: ArrayOfString; const FilterFields: ArrayOfString; 
+                                   const FilterValues: ArrayOfString; const LimitFrom: Integer; const LimitCount: Integer): string; stdcall;
+    function  Tasks_Specializations_Update(const ol_EntityID: Integer; const ol_Username: string; const ol_Password: string; const SpecId: Integer; const NamesArray: ArrayOfString; const ValuesArray: ArrayOfString
+                                           ): string; stdcall;
+    function  Tasks_Specializations_Get(const ol_EntityID: Integer; const ol_Username: string; const ol_Password: string; const Fields: ArrayOfString; const FilterFields: ArrayOfString; const FilterValues: ArrayOfString; 
+                                        const LimitFrom: Integer; const LimitCount: Integer): string; stdcall;
+    function  Tasks_Employees_Specializations_Update(const ol_EntityID: Integer; const ol_Username: string; const ol_Password: string; const BusinessId: Integer; const SpecId: Integer; const entity_employeeID: Integer; 
+                                                     const NamesArray: ArrayOfString; const ValuesArray: ArrayOfString): string; stdcall;
+    function  Tasks_Employees_Specializations_Get(const ol_EntityID: Integer; const ol_Username: string; const ol_Password: string; const Fields: ArrayOfString; const FilterFields: ArrayOfString; const FilterValues: ArrayOfString; 
+                                                  const LimitFrom: Integer; const LimitCount: Integer): string; stdcall;
+    function  Tasks_Get(const ol_EntityID: Integer; const ol_Username: string; const ol_Password: string; const TaskId: Integer; const entity_employeeID: Integer; const Fields: ArrayOfString; 
+                        const FilterFields: ArrayOfString; const FilterValues: ArrayOfString; const LimitFrom: Integer; const LimitCount: Integer): string; stdcall;
   end;
 
 function GetIBusinessAPI(UseWSDL: Boolean=System.False; Addr: string=''; HTTPRIO: THTTPRIO = nil): IBusinessAPI;
@@ -219,8 +233,8 @@ implementation
 
 function GetIBusinessAPI(UseWSDL: Boolean; Addr: string; HTTPRIO: THTTPRIO): IBusinessAPI;
 const
-  defWSDL = 'http://localhost:33322/wsdl/IBusinessAPI/wsdl/IBusinessAPI';
-  defURL  = 'http://localhost:33322/soap/IBusinessAPI';
+  defWSDL = 'http://127.0.0.1:33322/wsdl/IBusinessAPI/wsdl/IBusinessAPI';
+  defURL  = 'http://127.0.0.1:33322/soap/IBusinessAPI';
   defSvc  = 'IBusinessAPIservice';
   defPrt  = 'IBusinessAPIPort';
 var

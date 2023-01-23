@@ -130,7 +130,6 @@
         </DCCReference>
         <DCCReference Include="LogHelper.pas"/>
         <DCCReference Include="IniReaderClass.pas"/>
-        <DCCReference Include="IBusinessAPI1.pas"/>
         <DCCReference Include="NewEntityForm.pas">
             <Form>newEntityFrm</Form>
             <FormType>dfm</FormType>
@@ -145,6 +144,14 @@
             <Form>SettingsForm</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="IWSDLPublish1.pas"/>
+        <DCCReference Include="IBusinessAPI1.pas"/>
+        <DCCReference Include="DatabaseClass.pas">
+            <Form>DataModule2</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="DBConnectResult.pas"/>
         <None Include="settings.ini"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
@@ -168,15 +175,15 @@
                 </Source>
             </Delphi.Personality>
             <Deployment Version="3">
-                <DeployFile LocalName="settings.ini" Configuration="Debug" Class="ProjectFile">
-                    <Platform Name="Win32">
-                        <RemoteDir>.\</RemoteDir>
-                        <Overwrite>true</Overwrite>
-                    </Platform>
-                </DeployFile>
                 <DeployFile LocalName="Win32\Debug\MekashronCRM.exe" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win32">
                         <RemoteName>MekashronCRM.exe</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="settings.ini" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>

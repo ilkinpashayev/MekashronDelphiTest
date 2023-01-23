@@ -1,0 +1,80 @@
+unit DatabaseClass;
+
+interface
+
+uses
+  System.SysUtils, System.Classes, FireDAC.Stan.Intf, FireDAC.Stan.Option,
+  FireDAC.Stan.Error, FireDAC.UI.Intf, FireDAC.Phys.Intf, FireDAC.Stan.Def,
+  FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys, FireDAC.Phys.MySQL,
+  FireDAC.Phys.MySQLDef, FireDAC.VCLUI.Wait, Data.DB, FireDAC.Comp.Client,
+  FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.DApt,
+  FireDAC.Comp.DataSet,IniReaderClass;
+
+type
+  TDataModule2 = class(TDataModule)
+    mysqlConnection: TFDConnection;
+    qryCallback: TFDQuery;
+    FDPhysMySQLDriverLink1: TFDPhysMySQLDriverLink;
+    function  connectDB: Integer;
+
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  DataModule2: TDataModule2;
+  IniReader   : IniReaderHelper;
+
+implementation
+
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+
+{$R *.dfm}
+function TDataModule2.connectDB:Integer;
+var
+   errorMessage     : string;
+begin
+  result := 0;
+   try
+     IniReader := IniReaderHelper.Create;
+     logMessage := logHelper.generateLogMessage('DatabaseConnection','Setting up connection');
+     eventLogMemo.Lines.Add(logMessage);
+     logMessage := logHelper.generateLogMessage('DatabaseConnection','Connecting to Server:'+IniReader.Server+' ; Database: '+IniReader.Database);
+     eventLogMemo.Lines.Add(logMessage);
+     mysqlConnection.Close;
+     mysqlConnection.Params.Clear;
+     mysqlConnection.Params.Add('DriverID=MySQL');
+     mysqlConnection.Params.Add('Server='+IniReader.Server);
+     mysqlConnection.Params.Add('Port='+IniReader.Port);
+     mysqlConnection.Params.Add('Database='+IniReader.Database);
+     mysqlConnection.Params.Add('User_Name='+IniReader.User_Name);
+     mysqlConnection.Params.Add('Password='+IniReader.Password);
+     mysqlConnection.Open;
+  except
+   on E : Exception do
+     begin
+       logMessage := logHelper.generateLogMessage('DatabaseConnection','Exception class name = '+E.ClassName);
+       eventLogMemo.Lines.Add(logMessage);
+       logMessage := logHelper.generateLogMessage('DatabaseConnection','Exception message = '+E.Message);
+       eventLogMemo.Lines.Add(logMessage);
+       errorMessage :='Error';
+       result := -1;
+     end;
+   end;
+
+  if (result =-1) then
+  begin
+     logMessage := logHelper.generateLogMessage('DatabseConnection','Couldn''t connect to database check setting then  try again');
+     eventLogMemo.Lines.Add(logMessage);
+     Exit;
+  end
+  else
+  begin
+     logMessage := logHelper.generateLogMessage('DatabseConnection','Connected successfully');
+     eventLogMemo.Lines.Add(logMessage);
+  end;
+end;
+
+end.

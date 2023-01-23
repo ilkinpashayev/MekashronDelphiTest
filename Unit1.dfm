@@ -77,7 +77,7 @@ object Form1: TForm1
     OnClick = QryDataSendRequestBtnClick
   end
   object newentrybtn: TButton
-    Left = 296
+    Left = 287
     Top = 90
     Width = 75
     Height = 25
@@ -93,25 +93,6 @@ object Form1: TForm1
     Caption = 'Add Telemarkeing'
     TabOrder = 4
     OnClick = TelemarketingAddButtonClick
-  end
-  object mysqlConnection: TFDConnection
-    Params.Strings = (
-      'DriverID=MySQL'
-      'User_Name=root')
-    Left = 520
-    Top = 64
-  end
-  object FDPhysMySQLDriverLink1: TFDPhysMySQLDriverLink
-    VendorLib = 'C:\lib\l\libmysql\libmysql.dll'
-    Left = 632
-    Top = 64
-  end
-  object qryCallback: TFDQuery
-    Connection = mysqlConnection
-    SQL.Strings = (
-      'select * from callback')
-    Left = 504
-    Top = 128
   end
   object MainMenu1: TMainMenu
     Left = 344
