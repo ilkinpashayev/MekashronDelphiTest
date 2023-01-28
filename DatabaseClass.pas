@@ -16,6 +16,7 @@ type
     qryCallback: TFDQuery;
     FDPhysMySQLDriverLink1: TFDPhysMySQLDriverLink;
     function  connectDB( server:string; port:string; database:string;username:string; password:string):TDbConnectResult;
+    procedure DataModuleCreate(Sender: TObject);
 
   private
     { Private declarations }
@@ -86,6 +87,11 @@ begin
      eventLogMemo.Lines.Add(logMessage);
   end;
   }
+end;
+
+procedure TDataModule2.DataModuleCreate(Sender: TObject);
+begin
+  FDPhysMySQLDriverLink1.VendorLib:='libmysql.dll';
 end;
 
 end.

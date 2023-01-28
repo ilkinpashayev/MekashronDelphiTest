@@ -134,6 +134,7 @@ begin
      eventLogMemo.Lines.Add(logMessage);
      logMessage := logHelper.generateLogMessage('DatabseConnection',dbconnectmodel.ExceptonMessage);
      eventLogMemo.Lines.Add(logMessage);
+     result :=  -1;
    end;
 
   if (result =-1) then

@@ -87,6 +87,28 @@ begin
       dbModule := TDataModule2.Create(nil);
       IniReader := IniReaderHelper.Create;
       dbconnectmodel :=dbModule.connectDB(IniReader.Server,IniReader.Port,IniReader.Database,IniReader.User_Name,IniReader.Password);
+    try
+      dbModule.qryCallback.SQL.Text := 'SELECT count(*) cnt FROM system_parameters where parmname=''entity_default_categoryID''';
+      dbModule.qryCallback.Open;
+      dbModule.qryCallback.First;
+      var defaultcount :=0;
+      while not dbModule.qryCallback.eof do
+      begin
+        defaultcount := dbModule.qryCallback.FieldByName('cnt').AsInteger;
+        dbModule.qryCallback.Next;
+      end;
+      if (defaultcount=0) then
+      begin
+        dbModule.mysqlConnection.ExecSQL('insert into system_parameters (parmvalue,parmname) values (0, ''entity_default_categoryID'')');
+      end;
+
+
+  except
+    on E : Exception do
+      begin
+
+      end;
+  end;
 
       dbModule.mysqlConnection.ExecSQL('update system_parameters set parmvalue='+inttostr(SubCategoryList[subcategorycombo.ItemIndex])+' where parmname=''entity_default_categoryID''');
         EntityAddresponse :=   (BusinessApi as IBusinessAPI).Entity_Add(
@@ -128,7 +150,6 @@ begin
   end
   else
   begin
-     memolog.Lines.Add('Category is not selected');
       memolog.Visible :=true;
   end;
 

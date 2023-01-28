@@ -1,5 +1,6 @@
 object DataModule2: TDataModule2
   OldCreateOrder = False
+  OnCreate = DataModuleCreate
   Height = 205
   Width = 340
   object mysqlConnection: TFDConnection
