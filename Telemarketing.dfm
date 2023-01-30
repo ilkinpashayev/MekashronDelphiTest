@@ -4,105 +4,140 @@ object TelemarketingForm: TTelemarketingForm
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = 'Add Telemarketing'
-  ClientHeight = 211
-  ClientWidth = 456
+  ClientHeight = 344
+  ClientWidth = 719
   Color = clBtnFace
   CustomTitleBar.CaptionAlignment = taCenter
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -11
+  Font.Height = -14
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
   Position = poDesktopCenter
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 17
   object Label2: TLabel
-    Left = 8
-    Top = 51
-    Width = 49
-    Height = 13
+    Left = 10
+    Top = 64
+    Width = 62
+    Height = 17
+    Margins.Left = 4
+    Margins.Top = 4
+    Margins.Right = 4
+    Margins.Bottom = 4
     Caption = 'Entity ID'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -11
+    Font.Height = -14
     Font.Name = 'Tahoma'
     Font.Style = [fsBold]
     ParentFont = False
   end
   object UserNameLbl: TLabel
-    Left = 8
-    Top = 85
-    Width = 61
-    Height = 13
+    Left = 10
+    Top = 106
+    Width = 75
+    Height = 17
+    Margins.Left = 4
+    Margins.Top = 4
+    Margins.Right = 4
+    Margins.Bottom = 4
     Caption = 'User Name'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -11
+    Font.Height = -14
     Font.Name = 'Tahoma'
     Font.Style = [fsBold]
     ParentFont = False
   end
   object Label3: TLabel
-    Left = 8
-    Top = 117
-    Width = 54
-    Height = 13
+    Left = 10
+    Top = 146
+    Width = 67
+    Height = 17
+    Margins.Left = 4
+    Margins.Top = 4
+    Margins.Right = 4
+    Margins.Bottom = 4
     Caption = 'Password'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
-    Font.Height = -11
+    Font.Height = -14
     Font.Name = 'Tahoma'
     Font.Style = [fsBold]
     ParentFont = False
   end
   object responselabel: TLabel
-    Left = 96
-    Top = 16
-    Width = 3
-    Height = 13
+    Left = 120
+    Top = 20
+    Width = 4
+    Height = 17
+    Margins.Left = 4
+    Margins.Top = 4
+    Margins.Right = 4
+    Margins.Bottom = 4
     Visible = False
   end
   object CreateTelemarketingButton: TButton
-    Left = 8
-    Top = 8
-    Width = 75
-    Height = 25
+    Left = 10
+    Top = 10
+    Width = 94
+    Height = 31
+    Margins.Left = 4
+    Margins.Top = 4
+    Margins.Right = 4
+    Margins.Bottom = 4
     Caption = 'Create'
     TabOrder = 0
     OnClick = CreateTelemarketingButtonClick
   end
   object EntityNamesCombo: TComboBox
-    Left = 79
-    Top = 48
-    Width = 121
+    Left = 99
+    Top = 60
+    Width = 151
     Height = 21
+    Margins.Left = 4
+    Margins.Top = 4
+    Margins.Right = 4
+    Margins.Bottom = 4
     TabOrder = 1
   end
   object UserNameEdit: TEdit
-    Left = 79
-    Top = 80
-    Width = 121
-    Height = 21
+    Left = 99
+    Top = 100
+    Width = 151
+    Height = 25
+    Margins.Left = 4
+    Margins.Top = 4
+    Margins.Right = 4
+    Margins.Bottom = 4
     TabOrder = 2
     Text = 'admin'
   end
   object PasswordOlEdit: TEdit
-    Left = 79
-    Top = 114
-    Width = 121
-    Height = 21
+    Left = 99
+    Top = 143
+    Width = 151
+    Height = 25
+    Margins.Left = 4
+    Margins.Top = 4
+    Margins.Right = 4
+    Margins.Bottom = 4
     PasswordChar = '*'
     TabOrder = 3
     Text = 'admin'
   end
   object TelemarketingUserList: TCheckListBox
-    Left = 216
-    Top = 48
-    Width = 232
-    Height = 155
+    Left = 270
+    Top = 60
+    Width = 290
+    Height = 194
+    Margins.Left = 4
+    Margins.Top = 4
+    Margins.Right = 4
+    Margins.Bottom = 4
     OnClickCheck = TelemarketingUserListClickCheck
-    ItemHeight = 13
     Items.Strings = (
       '1'
       '2'
@@ -117,10 +152,14 @@ object TelemarketingForm: TTelemarketingForm
     TabOrder = 4
   end
   object memolog: TMemo
-    Left = 89
-    Top = 8
-    Width = 360
-    Height = 28
+    Left = 111
+    Top = 10
+    Width = 450
+    Height = 35
+    Margins.Left = 4
+    Margins.Top = 4
+    Margins.Right = 4
+    Margins.Bottom = 4
     BorderStyle = bsNone
     Color = clBtnFace
     ScrollBars = ssVertical

@@ -15,6 +15,7 @@ type
     mysqlConnection: TFDConnection;
     qryCallback: TFDQuery;
     FDPhysMySQLDriverLink1: TFDPhysMySQLDriverLink;
+    qrySelect: TFDQuery;
     function  connectDB( server:string; port:string; database:string;username:string; password:string):TDbConnectResult;
     procedure DataModuleCreate(Sender: TObject);
 
@@ -42,8 +43,9 @@ var
 begin
 
    try
-     IniReader := IniReaderHelper.Create;
 
+      if (mysqlConnection.State<>csConnected) then
+  begin
      mysqlConnection.Close;
      mysqlConnection.Params.Clear;
      mysqlConnection.Params.Add('DriverID=MySQL');
@@ -58,6 +60,7 @@ begin
      result.isConnected :=1;
      result.ExceptonMessage := '';
      result.ExceptionClass :='';
+  end;
   except
    on E : Exception do
      begin

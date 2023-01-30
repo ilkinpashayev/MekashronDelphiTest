@@ -11,6 +11,12 @@ type IniReaderHelper = class
       Database : string;
       User_name: string;
       Password : string;
+      ServiceEntityID : string;
+      ServiceUsername : string;
+      ServicePassword  : string;
+      ServiceBusinessID : string;
+      ServiceCountryISO : string;
+      ServiceCategoryID : string;
       Wsdl     : string;
     Constructor Create; overload;
   end;
@@ -26,14 +32,29 @@ var
   DatabaseIni : string;
   UserNameIni : string;
   PasswordIni : string;
+  ServiceEntityIDIni : string;
+  ServiceUsernameIni : string;
+  ServicePasswordIni  : string;
+  ServiceBusinessIDIni : string;
+  ServiceCountryISOIni : string;
+  ServiceCategoryIDIni : string;
   WsdlIni     : string;
   appINI : TIniFile;
+  serviceINI : TIniFile;
 begin
 
   ServerIni   := '';
   PortIni     := '';
   DatabaseIni := '';
   UserNameIni := '';
+  ServiceEntityIDIni :='';
+  ServiceUsernameIni :='';
+  ServicePasswordIni  :='';
+  ServiceBusinessIDIni :='';
+  ServiceCountryISOIni := '';
+  ServiceCategoryIDIni :='';
+
+
   WsdlIni     :='';
   try
      appINI      := TIniFile.Create(ExtractFilePath(Application.ExeName) + 'settings.ini');
@@ -42,7 +63,17 @@ begin
      DatabaseIni := appINI.ReadString('Param','Database','');
      UserNameIni := appINI.ReadString('Param','User_Name','');
      PasswordIni := appINI.ReadString('Param','Password','');
-     WsdlIni     := appINI.ReadString('Param','Wsdl','');
+
+
+     serviceINI      := TIniFile.Create(ExtractFilePath(Application.ExeName) + 'servicesettings.ini');
+     ServiceEntityIDIni :=serviceINI.ReadString('Param','EntityID','');
+     ServiceUsernameIni :=serviceINI.ReadString('Param','Username','');
+     ServicePasswordIni  :=serviceINI.ReadString('Param','Password','');
+     ServiceBusinessIDIni :=serviceINI.ReadString('Param','BusinessID','');
+     ServiceCountryISOIni := serviceINI.ReadString('Param','CountryISO','');
+     ServiceCategoryIDIni :=serviceINI.ReadString('Param','CategoryID','');
+     WsdlIni     := serviceINI.ReadString('Param','Wsdl','');
+
   finally
      appINI.Free;
   end;
@@ -52,6 +83,13 @@ begin
   Database := DatabaseIni;
   User_Name:= UserNameIni;
   Password := PasswordIni;
+
+  ServiceEntityID := ServiceEntityIDIni;
+  ServiceUsername :=ServiceUsernameIni;
+  ServicePassword  :=ServicePasswordIni;
+  ServiceBusinessID :=ServiceBusinessIDIni;
+  ServiceCountryISO :=ServiceCountryISOIni;
+  ServiceCategoryID :=ServiceCategoryIDIni;
   Wsdl     := WsdlIni;
 
 end;

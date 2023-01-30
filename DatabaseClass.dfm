@@ -1,8 +1,8 @@
 object DataModule2: TDataModule2
   OldCreateOrder = False
   OnCreate = DataModuleCreate
-  Height = 205
-  Width = 340
+  Height = 325
+  Width = 536
   object mysqlConnection: TFDConnection
     Params.Strings = (
       'DriverID=MySQL'
@@ -21,5 +21,12 @@ object DataModule2: TDataModule2
     VendorLib = 'C:\lib\l\libmysql\libmysql.dll'
     Left = 159
     Top = 16
+  end
+  object qrySelect: TFDQuery
+    Connection = mysqlConnection
+    SQL.Strings = (
+      'select * from callback')
+    Left = 95
+    Top = 86
   end
 end

@@ -13,7 +13,8 @@ uses
   IWSDLPublish1 in 'IWSDLPublish1.pas',
   IBusinessAPI1 in 'IBusinessAPI1.pas',
   DatabaseClass in 'DatabaseClass.pas' {DataModule2: TDataModule},
-  DBConnectResult in 'DBConnectResult.pas';
+  DBConnectResult in 'DBConnectResult.pas',
+  Unit2 in 'Unit2.pas' {servicesettings};
 
 {$R *.res}
 
@@ -25,5 +26,6 @@ begin
   Application.CreateForm(TTelemarketingForm, TelemarketingForm);
   Application.CreateForm(TSettingsForm, SettingsForm);
   Application.CreateForm(TDataModule2, DataModule2);
+  Application.CreateForm(Tservicesettings, servicesettings);
   Application.Run;
 end.

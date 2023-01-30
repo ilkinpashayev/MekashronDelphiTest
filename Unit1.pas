@@ -11,42 +11,37 @@ uses
   FireDAC.Phys.MySQLDef, FireDAC.Phys.MySQL,IniReaderClass, FireDAC.Stan.Param,
   FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.DApt, FireDAC.Comp.DataSet,DateUtils,TDBThreadClass,
   Datasnap.DBClient, NewEntityForm,IBusinessAPI1,System.Generics.Collections,Telemarketing,
-  Vcl.Menus,Settings,DatabaseClass,DBConnectResult;
+  Vcl.Menus,Settings,DatabaseClass,DBConnectResult,Unit2, Soap.InvokeRegistry,
+  System.Net.URLClient, Soap.Rio, Soap.SOAPHTTPClient,Rest.Json,ResponseModel,
+  ActiveX,TelemarketingResponseModel, Vcl.CheckLst;
 
 type
   TForm1 = class(TForm)
-    createCustomersBtn: TButton;
-    Label1: TLabel;
     Label2: TLabel;
     eventLogMemo: TMemo;
     QryDataSendRequestBtn: TButton;
-    newentrybtn: TButton;
     TelemarketingAddButton: TButton;
     MainMenu1: TMainMenu;
     SettingsMenu: TMenuItem;
-    procedure createCustomersBtnClick(Sender: TObject);
+    Label1: TLabel;
+    Serviceconnection1: TMenuItem;
+    HTTPRIO1: THTTPRIO;
+    CheckListBox1: TCheckListBox;
     procedure FormCreate(Sender: TObject);
     function  connectDB: Integer;
+    function  checkServiceSettings: Integer;
     function  checktable: Integer;
     function  createtable:Integer;
-    procedure insertCallback;
-    procedure createCustomerThreads(newCustomerCount : Integer);
     procedure selectCallbackData;
     procedure QryDataSendRequestBtnClick(Sender: TObject);
-    procedure newentrybtnClick(Sender: TObject);
-    procedure getUsernameList(newentityform:TnewEntityFrm);
-    procedure TelemarketingAddButtonClick(Sender: TObject);
-    procedure getTelemarketingUsernameList(newTelemarketingform:TTelemarketingForm);
     procedure SettingsMenuClick(Sender: TObject);
+    procedure Serviceconnection1Click(Sender: TObject);
+    procedure TelemarketingAddButtonClick(Sender: TObject);
+    procedure CheckListBox1ClickCheck(Sender: TObject);
   private
     { Private declarations }
   public
-    { Public declarations }
-  end;
-
-  TDBThreadInsert = class(TThread)
-  protected
-    procedure Execute; override;
+         { Public declarations }
   end;
 
   TDBThreadSelect = class(TThread)
@@ -66,50 +61,77 @@ var
   logHelper   : MekashronLogHelper;
   dbModule    : TDataModule2;
   dbconnectmodel: TDbConnectResult;
+  CIDList : TList<String>;
+  entityList : TList<Integer>;
+  SelectedList : TList<Integer>;
 
 
 implementation
 
-{$R *.dfm}
-procedure TForm1.newentrybtnClick(Sender: TObject);
+function TForm1.checkServiceSettings:Integer;
 var
-  connectresult : Integer;
-  newEntity     : TnewEntityFrm;
-  soapClient    : IBusinessAPI;
+   errorMessage     : string;
 begin
-   eventLogMemo.Lines.Add('newentrybutton click begin');
-
-   try
-    connectresult :=  connectDB;
-
-    if (connectresult = 0)  then
-    begin
-      newEntity := TnewEntityFrm.Create(nil);
-      getUsernameList(newentity);
-      IniReader := IniReaderHelper.Create;
-      newEntity.BusinessApi.URL:= IniReader.Wsdl;
-      newEntity.maincategorycombo.Style := csOwnerDrawFixed;
-      newEntity.ShowModal;
-    end;
-   except
-     on E : Exception do
-     begin
-       logMessage := logHelper.generateLogMessage('NewEntity','Exception class name = '+E.ClassName);
+    IniReader := IniReaderHelper.Create;
+    if (IniReader.ServiceEntityID = null) or (IniReader.ServiceEntityID = '') then
+      begin
+        result:=-1;
+       logMessage := logHelper.generateLogMessage('ServiceSettings','EntityID is missing');
        eventLogMemo.Lines.Add(logMessage);
-       logMessage := logHelper.generateLogMessage('NewEntity','Exception message = '+E.Message);
+      end
+    else if  (IniReader.ServiceUsername=null) or  (IniReader.ServiceUsername='') then
+      begin
+        result:=-1;
+       logMessage := logHelper.generateLogMessage('ServiceSettings','ServiceUsername is missing');
        eventLogMemo.Lines.Add(logMessage);
-     end;
-   end;
+      end
+     else if  (IniReader.ServicePassword=null) or  (IniReader.Password='') then
+      begin
+        result:=-1;
+       logMessage := logHelper.generateLogMessage('ServiceSettings','Password is missing');
+       eventLogMemo.Lines.Add(logMessage);
+      end
+     else if  (IniReader.ServiceBusinessID=null) or  (IniReader.ServiceBusinessID='') then
+      begin
+        result:=-1;
+       logMessage := logHelper.generateLogMessage('ServiceSettings','ServiceBusinessID is missing');
+       eventLogMemo.Lines.Add(logMessage);
+      end
+     else if  (IniReader.ServiceCountryISO=null) or  (IniReader.ServiceCountryISO='') then
+      begin
+        result:=-1;
+       logMessage := logHelper.generateLogMessage('ServiceSettings','ServiceCountryISO is missing');
+       eventLogMemo.Lines.Add(logMessage);
+      end
+     else if  (IniReader.ServiceCategoryID=null) or  (IniReader.ServiceCategoryID='') then
+      begin
+        result:=-1;
+       logMessage := logHelper.generateLogMessage('ServiceSettings','ServiceCategoryID is missing');
+       eventLogMemo.Lines.Add(logMessage);
+      end
+     else if  (IniReader.Wsdl=null) or  (IniReader.Wsdl='') then
+      begin
+        result:=-1;
+       logMessage := logHelper.generateLogMessage('ServiceSettings','Wsdl is missing');
+       eventLogMemo.Lines.Add(logMessage);
+      end
+      else
+      begin
+        HTTPRIO1.URL :=IniReader.Wsdl;
+        result :=1;
+      end;
+
+
 
 end;
 
+{$R *.dfm}
 function TForm1.connectDB:Integer;
 var
    errorMessage     : string;
 begin
   result := 0;
    try
-     IniReader := IniReaderHelper.Create;
      logMessage := logHelper.generateLogMessage('DatabaseConnection','Setting up connection');
      eventLogMemo.Lines.Add(logMessage);
      logMessage := logHelper.generateLogMessage('DatabaseConnection','Connecting to Server:'+IniReader.Server+' ; Database: '+IniReader.Database);
@@ -150,174 +172,58 @@ begin
   end;
 end;
 
-procedure TForm1.insertCallback;
-begin
-  if not dbModule.mysqlConnection.Connected then
-  begin
-     logMessage := logHelper.generateLogMessage('DatabseConnection','Couldn''t connect to database, try again');
-     eventLogMemo.Lines.Add(logMessage);
-     Exit;
-  end;
-
-  dbModule.mysqlConnection.ExecSQL('insert into callback(Date,DID,CID, Number,Language,  Prefix) ' +
-                 'values(:1,:2,:3,:4,:5,:6)', [Now,'ttt','kk','99','En','pref']);
-
-
-  dbModule.qryCallback.refresh;
-
-
-end;
 procedure TForm1.QryDataSendRequestBtnClick(Sender: TObject);
 var
    connectresult    : Integer;
    tableexists      : Integer;
+
+  //connectresult : Integer;
+  newEntity     : TnewEntityFrm;
+  soapClient    : IBusinessAPI;
 begin
+  if (checkServiceSettings=1)  then
+  begin
    connectresult :=  connectDB;
 
-  if (connectresult = 0) then
-  begin
-    tableexists := checktable;
-  end;
-
-  if (connectresult = 0) and (tableexists=0) then
-  begin
-    try
-      selectCallbackData;
-    except
-      on E : Exception do
-     begin
-       logMessage := logHelper.generateLogMessage('SelecttCallback','Exception class name = '+E.ClassName);
-       eventLogMemo.Lines.Add(logMessage);
-       logMessage := logHelper.generateLogMessage('SelectCallback','Exception message = '+E.Message);
-       eventLogMemo.Lines.Add(logMessage);
-     end;
-    end;
-
-  end;
-end;
-
-procedure TForm1.createCustomerThreads(newCustomerCount : Integer);
-var
-  I                : Integer;
-  threadArray      : Array[1..10] of TDBThreadInsert;
-begin
-  for I := 1 to newCustomerCount do
-  begin
-    logMessage := logHelper.generateLogMessage('ThreadInsert','Thread create '+Inttostr(I));
-    eventLogMemo.Lines.Add(logMessage);
-
-    threadArray[I] := TDBThreadInsert.Create(False);
-  end;
-
-  for I := 1 to newCustomerCount do
-  begin
-    threadArray[I].WaitFor;
-    threadArray[I].Free
-  end;
-end;
-
-procedure TForm1.getUsernameList(newentityform:TnewEntityFrm);
-var
-  entityname : string;
-  entityid   : integer;
-  categoryname : string;
-  categoryid   : Integer;
-begin
-
-    try
-      newentityform.EntityNamesCombo.Items.Clear;
-      newentityform.List :=TList<Integer>.Create;
-      newentityform.List.Clear;
-      //mysqlConnection.ExecSQL('update system_parameters set parmvalue=1 where parmname=''entity_default_categoryID''');
-
-      dbModule.qryCallback.SQL.Text := 'SELECT ol_username,entityid FROM entities';
-      dbModule.qryCallback.Open;
-      dbModule.qryCallback.First;
-      while not dbModule.qryCallback.eof do
-      begin
-        entityname := dbModule.qryCallback.FieldByName('ol_username').AsString;
-        if (entityname='') then
-          begin
-            entityname := 'Default';
-          end;
-        newentityform.EntityNamesCombo.Items.Add(entityname);
-        entityid := dbModule.qryCallback.FieldByName('entityid').AsInteger;
-        newentityform.List.Add(entityid) ;
-        dbModule.qryCallback.Next;
-      end;
-     dbModule.qryCallback.Close;
-
-     newentityform.maincategorycombo.Items.Clear;
-      newentityform.MainCategoryList :=TList<Integer>.Create;
-      newentityform.MainCategoryList.Clear;
-     // mysqlConnection.ExecSQL('update system_parameters set parmvalue=1 where parmname=''entity_default_categoryID''');
-
-      dbModule.qryCallback.SQL.Text := 'SELECT CONVERT(name USING utf8) categoryname,categoryid FROM categories';
-      dbModule.qryCallback.Open;
-      dbModule.qryCallback.First;
-      while not dbModule.qryCallback.eof do
-      begin
-        categoryname := dbModule.qryCallback.FieldByName('categoryname').AsString;
-
-        newentityform.maincategorycombo.Items.Add(categoryname);
-        categoryid := dbModule.qryCallback.FieldByName('categoryid').AsInteger;
-        newentityform.MainCategoryList.Add(categoryid) ;
-        dbModule.qryCallback.Next;
-      end;
-
-    except
-      on E : Exception do
-     begin
-       logMessage := logHelper.generateLogMessage('GetUsernameList','Exception class name = '+E.ClassName);
-       eventLogMemo.Lines.Add(logMessage);
-       logMessage := logHelper.generateLogMessage('GetUsernameList','Exception message = '+E.Message);
-       eventLogMemo.Lines.Add(logMessage);
-     end;
-    end;
-end;
-
-procedure TForm1.getTelemarketingUsernameList(newTelemarketingform:TTelemarketingForm);
-var
-  entityname : string;
-begin
- try
-    newTelemarketingform.TelemarketingUserList.Items.Clear;
-    newTelemarketingform.List :=TList<Integer>.Create;
-    newTelemarketingform.EntityList :=TList<Integer>.Create;
-    newTelemarketingform.SelectedList :=TList<Integer>.Create;
-    newTelemarketingform.List.Clear;
-    dbmodule.qryCallback.SQL.Text :='SELECT ol_username,entityid FROM entities';
-    dbmodule.qryCallback.Open;
-    dbmodule.qryCallback.First;
-
-    while not dbmodule.qryCallback.eof do
+   if (connectresult = 0) then
     begin
-      entityname := dbmodule.qryCallback.FieldByName('ol_username').AsString;
-      if entityname='' then
-        entityname:='Default';
-      newTelemarketingform.TelemarketingUserList.Items.Add(entityname);
-
-      newTelemarketingform.List.Add(dbmodule.qryCallback.FieldByName('entityid').AsInteger) ;
-      dbmodule.qryCallback.Next;
+      tableexists := checktable;
     end;
-    dbmodule.qryCallback.Close;
 
-
-    dbmodule.qryCallback.SQL.Text :=  'select e.entityid, e.ol_username ' +
-                            'from entities e ' +
-                            'left join employees emp on (emp.Status<>0 or (DATE_ADD(emp.sync_modified_date, INTERVAL 24 HOUR)<utc_timestamp())) and emp.EntityId=e.EntityId ';
-    dbmodule.qryCallback.Open;
-    dbmodule.qryCallback.First;
-    while not dbmodule.qryCallback.eof do
+   if (connectresult = 0) and (tableexists=0) then
     begin
-      entityname := dbmodule.qryCallback.FieldByName('ol_username').AsString;
-      if entityname='' then
-        entityname:='Default1';
-      newTelemarketingform.EntityNamesCombo.Items.Add(entityname);
-      newTelemarketingform.EntityList.Add(dbmodule.qryCallback.FieldByName('entityid').AsInteger) ;
-      dbmodule.qryCallback.Next;
+      try
+        selectCallbackData;
+      except
+        on E : Exception do
+      begin
+       logMessage := logHelper.generateLogMessage('Run','Exception class name = '+E.ClassName);
+       eventLogMemo.Lines.Add(logMessage);
+       logMessage := logHelper.generateLogMessage('Run','Exception message = '+E.Message);
+       eventLogMemo.Lines.Add(logMessage);
+      end;
+      end;
     end;
-    dbmodule.qryCallback.Close;
+  end
+  else
+  begin
+     logMessage := logHelper.generateLogMessage('Run','Service settings missing');
+     eventLogMemo.Lines.Add(logMessage);
+  end;
+ {
+  eventLogMemo.Lines.Add('newentrybutton click begin');
+
+   try
+    connectresult :=  connectDB;
+
+    if (connectresult = 0)  then
+    begin
+      newEntity := TnewEntityFrm.Create(nil);
+      IniReader := IniReaderHelper.Create;
+      newEntity.BusinessApi.URL:= IniReader.Wsdl;
+      newEntity.maincategorycombo.Style := csOwnerDrawFixed;
+      newEntity.ShowModal;
+    end;
    except
      on E : Exception do
      begin
@@ -327,25 +233,40 @@ begin
        eventLogMemo.Lines.Add(logMessage);
      end;
    end;
-
-
+   }
 end;
+
 procedure TForm1.selectCallbackData;
 var
   I                : Integer;
   threadArray      : Array[1..10] of TDBThreadSelect;
 begin
   try
-    dbModule.qryCallback.SQL.Text := 'select * from callback where isextracted=0';
-    dbModule.qryCallback.Open;
-    dbModule.qryCallback.First;
-    while not dbModule.qryCallback.eof do
+    CIDList :=TList<String>.Create;
+    entityList :=    TList<Integer>.Create;
+    SelectedList :=TList<Integer>.Create;
+    CIDList.Clear;
+    entityList.Clear;
+    Form1.CheckListBox1.Items.Clear;
+    dbModule.qrySelect.SQL.Text := 'select * from callback where isextracted=0';
+    dbModule.qrySelect.Open;
+    dbModule.qrySelect.First;
+    while not dbModule.qrySelect.eof do
     begin
-          logMessage := logHelper.generateLogMessage('SelectCallback','Select data: :'+dbModule.qryCallback.FieldByName('DID').AsString);
+          logMessage := logHelper.generateLogMessage('SelectCallback','Select data: :'+dbModule.qrySelect.FieldByName('CID').AsString);
           Form1.eventLogMemo.Lines.Add(logMessage);
-          threadArray[1] := TDBThreadSelect.Create(dbModule.qryCallback.FieldByName('DID').AsString);
-          dbModule.qryCallback.Next;
+          CIDList.Add(dbModule.qrySelect.FieldByName('CID').AsString);
+          //threadArray[1] := TDBThreadSelect.Create(dbModule.qrySelect.FieldByName('CID').AsString);
+          dbModule.qrySelect.Next;
     end;
+    dbModule.qrySelect.Close;
+
+    for I := 0 to CIDList.Count-1 do
+      begin
+        threadArray[1] := TDBThreadSelect.Create(CIDList[I]);
+      end;
+
+
   except
   on E : Exception do
      begin
@@ -357,6 +278,14 @@ begin
   end;
 
 end;
+procedure TForm1.Serviceconnection1Click(Sender: TObject);
+var
+  settingsForm : Tservicesettings;
+begin
+  settingsForm := Tservicesettings.Create(nil);
+  settingsForm.ShowModal;
+end;
+
 procedure TForm1.SettingsMenuClick(Sender: TObject);
 var
   settingsForm : TSettingsForm;
@@ -368,34 +297,54 @@ end;
 
 procedure TForm1.TelemarketingAddButtonClick(Sender: TObject);
 var
-  newTelemarketing  : TTelemarketingForm;
-  I : integer;
-  connectresult : Integer;
+    EntityIDInt : Integer ;
+    I           : Integer;
+    TelemarketingAddresponse : string;
+    users : IBusinessAPI1.ArrayOfInt;
+    strValue : string;
+    entityid : Integer;
 begin
-    try
-    connectresult :=  connectDB;
-    if (connectresult = 0)  then
+  try
+    if (SelectedList.Count >0) then
     begin
-      IniReader := IniReaderHelper.Create;
-      newTelemarketing := TTelemarketingForm.Create(nil);
-      newTelemarketing.TelemarketingUserList.Items.Clear;
-      getTelemarketingUsernameList(newTelemarketing);
+      SetLength(users,SelectedList.Count);
+      for I := 0 to SelectedList.Count-1 do
+      begin
+         users[I] := SelectedList[I];
+         eventLogMemo.Lines.Add(inttostr(SelectedList[I]));
+      end;
 
-      newTelemarketing.BusinessApi.URL:= IniReader.Wsdl;
-     // newTelemarketing.BusinessApi.Port := 'IBusinessAPIPort';
-     // newTelemarketing.BusinessApi.Service := 'IBusinessAPIservice';
-      newTelemarketing.ShowModal;
+      entityid:=strtoint(IniReader.ServiceEntityID);
+      TelemarketingAddresponse :=   (HTTPRIO1 as IBusinessAPI).Telemarketing_add(
+        entityid,
+        IniReader.ServiceUsername,
+        IniReader.ServicePassword,
+        0,
+        users
+      );
+      var responseObj := TJson.JsonToObject<TTelemarketingResponseModel>(TelemarketingAddresponse);
+      if (responseObj.ResultCode = 0) then
+        begin
+          strValue := 'Telemarketing had been created successfully';
+          logMessage := logHelper.generateLogMessage('Telemarketing',strValue);
+          eventLogMemo.Lines.Add(logMessage);
+
+        end
+        else
+        begin
+          strValue := 'Something went wrong: '+responseObj.ResultMessage;
+          logMessage := logHelper.generateLogMessage('Telemarketing',strValue);
+          eventLogMemo.Lines.Add(logMessage);
+
+        end;
     end;
-   except
-     on E : Exception do
-     begin
-       logMessage := logHelper.generateLogMessage('NewTelemarketing','Exception class name = '+E.ClassName);
-       eventLogMemo.Lines.Add(logMessage);
-       logMessage := logHelper.generateLogMessage('NewTelemarketing','Exception message = '+E.Message);
-       eventLogMemo.Lines.Add(logMessage);
-     end;
-   end;
-
+  except
+    on E : Exception do
+      begin
+          logMessage := logHelper.generateLogMessage('Telemarketing',E.ClassName+' '+E.Message);
+          eventLogMemo.Lines.Add(logMessage);
+      end;
+    end;
 end;
 
 function TForm1.createtable:Integer;
@@ -430,6 +379,16 @@ begin
     end;
 end;
 
+procedure TForm1.CheckListBox1ClickCheck(Sender: TObject);
+begin
+  if CheckListBox1.Checked[CheckListBox1.ItemIndex] then
+  begin
+    SelectedList.Add(CheckListBox1.ItemIndex) ;
+  end
+  else
+      SelectedList.Remove(CheckListBox1.ItemIndex)  ;
+end;
+
 function TForm1.checktable:Integer;
 begin
   try
@@ -456,77 +415,80 @@ begin
       end;
 
   end;
-     {
-
-
-    qryCallback.SQL.Text := 'SELECT ol_username,entityid FROM mekashronbusiness.entities';
-    qryCallback.Open;
-    qryCallback.First;
-    newentityform.List :=TList<Integer>.Create;
-    while not qryCallback.eof do
-    begin
-      newentityform.EntityNamesCombo.Items.Add(
-      qryCallback.FieldByName('ol_username').AsString);
-      newentityform.List.Add(qryCallback.FieldByName('entityid').AsInteger) ;
-      qryCallback.Next;
-    end;
-  }
-end;
-
-procedure TForm1.createCustomersBtnClick(Sender: TObject);
-var
-   logHelper        : MekashronLogHelper;
-   errorMessage     : string;
-   newCustomerCount : Integer;
-   callBackData     : Variant;
-   connectresult    : Integer;
-   tableexists      : Integer;
-begin
-  connectresult :=  connectDB;
-  if (connectresult = 0) then
-  begin
-    tableexists := checktable;
-  end;
-
-  if (connectresult = 0) and (tableexists=0) then
-  begin
-    try
-      newCustomerCount := RandomRange(4,10);
-      logMessage := logHelper.generateLogMessage('btnClick','Random number of customers:'+IntToStr(newCustomerCount));
-      eventLogMemo.Lines.Add(logMessage);
-     // dbModule.qryCallback.Open;
-      createCustomerThreads(newCustomerCount);
-     dbmodule.mysqlConnection.Close;
-    except
-      on E : Exception do
-     begin
-       logMessage := logHelper.generateLogMessage('CallbackInsert','Exception class name = '+E.ClassName);
-       eventLogMemo.Lines.Add(logMessage);
-       logMessage := logHelper.generateLogMessage('CallbackInsert','Exception message = '+E.Message);
-       eventLogMemo.Lines.Add(logMessage);
-     end;
-    end;
-  end;
 end;
 
 procedure TForm1.FormCreate(Sender: TObject);
 begin
    dbModule := TDataModule2.Create(nil);
- { FDPhysMySQLDriverLink1.VendorLib :='libmysql.dll';
-  eventLogMemo.Lines.Clear();  }
 end;
 
-procedure TDBThreadInsert.Execute;
-begin
-  Form1.insertCallback;
-  logMessage := logHelper.generateLogMessage('ThreadInsert','New Customer Inserted');
-  Form1.eventLogMemo.Lines.Add(logMessage);
-end;
 
 procedure TDBThreadSelect.Execute;
+var
+    soapClient2 : IBusinessAPI;
+    EntityIDInt : Integer ;
+    I           : Integer;
+    strValue    : string;
+    EntityAddresponse : string;
+    entityid     : Integer;
+    req : string;
+    resp: TMemoryStream;
 begin
-  logMessage := logHelper.generateLogMessage('ThreadSelect','New Customer Selected '+FNewStr);
-  Form1.eventLogMemo.Lines.Add(logMessage);
+ CoInitialize(nil);
+ if (StrtoInt(IniReader.ServiceEntityID)>-1) then
+  begin
+    try
+
+      entityid := StrtoInt(IniReader.ServiceEntityID);
+
+
+        EntityAddresponse := (Form1.HTTPRIO1 as  IBusinessAPI).Entity_Add(
+            entityid,
+            IniReader.ServiceUsername,
+            IniReader.Password,
+            strtoint(IniReader.ServiceBusinessID),
+            0,
+            strtoint(IniReader.ServiceCategoryID),
+            '',
+            'admin',
+            '',
+            '',
+            FNewStr,
+            IniReader.ServiceCountryISO,
+            0 ) ;
+
+        var responseObj := TJson.JsonToObject<TResponseModel>(EntityAddresponse);
+        if (responseObj.ResultCode = 0) then
+        begin
+          strValue := 'Entity had been created sucessfully. New Entity ID: '+inttostr(responseObj.EntityId);
+          logMessage := logHelper.generateLogMessage('ThreadEntityAdd',strValue);
+          Form1.eventLogMemo.Lines.Add(logMessage);
+          entityList.Add(responseObj.EntityId);
+          Form1.CheckListBox1.Items.Add(FNewStr)
+        end
+        else
+        begin
+          strValue := 'Something went wrong: '+responseObj.ResultMessage;
+          logMessage := logHelper.generateLogMessage('ThreadEntityAdd',strValue);
+          Form1.eventLogMemo.Lines.Add(logMessage);
+        end;
+
+      except
+         on E : Exception do
+        begin
+          logMessage := logHelper.generateLogMessage('ThreadEntityAdd11',E.ClassName+' '+E.Message);
+          Form1.eventLogMemo.Lines.Add(logMessage);
+
+        end;
+
+      end;
+  end
+  else
+  begin
+    logMessage := logHelper.generateLogMessage('ThreadEntityAdd','Entity ID is wrong');
+    Form1.eventLogMemo.Lines.Add(logMessage);
+  end;
+
 end;
 
 constructor TDBThreadSelect.Create(const ANewStr: String);

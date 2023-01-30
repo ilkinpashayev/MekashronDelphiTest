@@ -42,7 +42,7 @@ begin
        SettingsMemo.Lines.Add('Database=mekashron');
        SettingsMemo.Lines.Add('User_Name=root');
        SettingsMemo.Lines.Add('Password=');
-       SettingsMemo.Lines.Add('Wsdl=IBusinessAPI.xml');
+       SettingsMemo.Lines.Add('Wsdl=http://127.0.0.1:33322/soap/IBusinessAPI');
 
     end;
   ShowMessage('Settings file loaded');
@@ -61,7 +61,7 @@ begin
     SettingsMemo.Lines.Add('Database=mekashron');
     SettingsMemo.Lines.Add('User_Name=root');
     SettingsMemo.Lines.Add('Password=');
-    SettingsMemo.Lines.Add('Wsdl=IBusinessAPI.xml');
+    SettingsMemo.Lines.Add('Wsdl=http://127.0.0.1:33322/soap/IBusinessAPI');
     SettingsMemo.Lines.SaveToFile('settings.ini');
     ShowMessage('Default ini file created');
   finally

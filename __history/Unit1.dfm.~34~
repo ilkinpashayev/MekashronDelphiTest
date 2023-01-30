@@ -1,0 +1,82 @@
+object Form1: TForm1
+  Left = 0
+  Top = 0
+  BorderIcons = [biSystemMenu]
+  BorderStyle = bsSingle
+  Caption = 'Mekashron CRM'
+  ClientHeight = 567
+  ClientWidth = 1114
+  Color = clBtnFace
+  CustomTitleBar.CaptionAlignment = taCenter
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  Menu = MainMenu1
+  OldCreateOrder = False
+  Position = poDesktopCenter
+  OnCreate = FormCreate
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Label2: TLabel
+    Left = 8
+    Top = 39
+    Width = 70
+    Height = 19
+    Caption = 'Event Log'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+  end
+  object Label1: TLabel
+    Left = 872
+    Top = 39
+    Width = 70
+    Height = 19
+    Caption = 'Event Log'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+  end
+  object eventLogMemo: TMemo
+    Left = 8
+    Top = 64
+    Width = 841
+    Height = 495
+    ScrollBars = ssVertical
+    TabOrder = 0
+  end
+  object QryDataSendRequestBtn: TButton
+    Left = 8
+    Top = 8
+    Width = 106
+    Height = 25
+    Caption = 'Run'
+    TabOrder = 1
+    OnClick = QryDataSendRequestBtnClick
+  end
+  object TelemarketingAddButton: TButton
+    Left = 136
+    Top = 8
+    Width = 105
+    Height = 25
+    Caption = 'Add Telemarkeing'
+    TabOrder = 2
+    OnClick = TelemarketingAddButtonClick
+  end
+  object MainMenu1: TMainMenu
+    Left = 344
+    Top = 152
+    object SettingsMenu: TMenuItem
+      Caption = 'Settings'
+      OnClick = SettingsMenuClick
+    end
+  end
+end
