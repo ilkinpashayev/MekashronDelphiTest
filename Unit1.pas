@@ -85,7 +85,7 @@ begin
        logMessage := logHelper.generateLogMessage('ServiceSettings','ServiceUsername is missing');
        eventLogMemo.Lines.Add(logMessage);
       end
-     else if  (IniReader.ServicePassword=null) or  (IniReader.Password='') then
+     else if  (IniReader.ServicePassword=null) or  (IniReader.ServicePassword='') then
       begin
         result:=-1;
        logMessage := logHelper.generateLogMessage('ServiceSettings','Password is missing');
@@ -107,6 +107,12 @@ begin
       begin
         result:=-1;
        logMessage := logHelper.generateLogMessage('ServiceSettings','ServiceCategoryID is missing');
+       eventLogMemo.Lines.Add(logMessage);
+      end
+     else if  (IniReader.ServiceCompaignID=null) or  (IniReader.ServiceCompaignID='') then
+      begin
+        result:=-1;
+       logMessage := logHelper.generateLogMessage('ServiceSettings','ServiceCompaignID is missing');
        eventLogMemo.Lines.Add(logMessage);
       end
      else if  (IniReader.Wsdl=null) or  (IniReader.Wsdl='') then
