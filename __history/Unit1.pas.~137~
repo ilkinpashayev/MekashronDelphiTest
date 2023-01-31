@@ -12,7 +12,8 @@ uses
   FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.DApt, FireDAC.Comp.DataSet,DateUtils,TDBThreadClass,
   Datasnap.DBClient, NewEntityForm,IBusinessAPI1,System.Generics.Collections,Telemarketing,
   Vcl.Menus,Settings,DatabaseClass,DBConnectResult,Unit2, Soap.InvokeRegistry,
-  System.Net.URLClient, Soap.Rio, Soap.SOAPHTTPClient,Rest.Json,ResponseModel,ActiveX;
+  System.Net.URLClient, Soap.Rio, Soap.SOAPHTTPClient,Rest.Json,ResponseModel,
+  ActiveX,TelemarketingResponseModel, Vcl.CheckLst;
 
 type
   TForm1 = class(TForm)
@@ -23,9 +24,9 @@ type
     MainMenu1: TMainMenu;
     SettingsMenu: TMenuItem;
     Label1: TLabel;
-    ListBox1: TListBox;
     Serviceconnection1: TMenuItem;
     HTTPRIO1: THTTPRIO;
+    CheckListBox1: TCheckListBox;
     procedure FormCreate(Sender: TObject);
     function  connectDB: Integer;
     function  checkServiceSettings: Integer;
@@ -33,9 +34,10 @@ type
     function  createtable:Integer;
     procedure selectCallbackData;
     procedure QryDataSendRequestBtnClick(Sender: TObject);
-    procedure TelemarketingAddButtonClick(Sender: TObject);
     procedure SettingsMenuClick(Sender: TObject);
     procedure Serviceconnection1Click(Sender: TObject);
+    procedure TelemarketingAddButtonClick(Sender: TObject);
+    procedure CheckListBox1ClickCheck(Sender: TObject);
   private
     { Private declarations }
   public
@@ -60,6 +62,8 @@ var
   dbModule    : TDataModule2;
   dbconnectmodel: TDbConnectResult;
   CIDList : TList<String>;
+  entityList : TList<Integer>;
+  SelectedList : TList<Integer>;
 
 
 implementation
@@ -239,6 +243,11 @@ var
 begin
   try
     CIDList :=TList<String>.Create;
+    entityList :=    TList<Integer>.Create;
+    SelectedList :=TList<Integer>.Create;
+    CIDList.Clear;
+    entityList.Clear;
+    Form1.CheckListBox1.Items.Clear;
     dbModule.qrySelect.SQL.Text := 'select * from callback where isextracted=0';
     dbModule.qrySelect.Open;
     dbModule.qrySelect.First;
@@ -288,34 +297,54 @@ end;
 
 procedure TForm1.TelemarketingAddButtonClick(Sender: TObject);
 var
-  newTelemarketing  : TTelemarketingForm;
-  I : integer;
-  connectresult : Integer;
+    EntityIDInt : Integer ;
+    I           : Integer;
+    TelemarketingAddresponse : string;
+    users : IBusinessAPI1.ArrayOfInt;
+    strValue : string;
+    entityid : Integer;
 begin
-    try
-    connectresult :=  connectDB;
-    if (connectresult = 0)  then
+  try
+    if (SelectedList.Count >0) then
     begin
-      IniReader := IniReaderHelper.Create;
-      newTelemarketing := TTelemarketingForm.Create(nil);
-      newTelemarketing.TelemarketingUserList.Items.Clear;
+      SetLength(users,SelectedList.Count);
+      for I := 0 to SelectedList.Count-1 do
+      begin
+         users[I] := SelectedList[I];
+         eventLogMemo.Lines.Add(inttostr(SelectedList[I]));
+      end;
 
+      entityid:=strtoint(IniReader.ServiceEntityID);
+      TelemarketingAddresponse :=   (HTTPRIO1 as IBusinessAPI).Telemarketing_add(
+        entityid,
+        IniReader.ServiceUsername,
+        IniReader.ServicePassword,
+        0,
+        users
+      );
+      var responseObj := TJson.JsonToObject<TTelemarketingResponseModel>(TelemarketingAddresponse);
+      if (responseObj.ResultCode = 0) then
+        begin
+          strValue := 'Telemarketing had been created successfully';
+          logMessage := logHelper.generateLogMessage('Telemarketing',strValue);
+          eventLogMemo.Lines.Add(logMessage);
 
-      newTelemarketing.BusinessApi.URL:= IniReader.Wsdl;
-     // newTelemarketing.BusinessApi.Port := 'IBusinessAPIPort';
-     // newTelemarketing.BusinessApi.Service := 'IBusinessAPIservice';
-      newTelemarketing.ShowModal;
+        end
+        else
+        begin
+          strValue := 'Something went wrong: '+responseObj.ResultMessage;
+          logMessage := logHelper.generateLogMessage('Telemarketing',strValue);
+          eventLogMemo.Lines.Add(logMessage);
+
+        end;
     end;
-   except
-     on E : Exception do
-     begin
-       logMessage := logHelper.generateLogMessage('NewTelemarketing','Exception class name = '+E.ClassName);
-       eventLogMemo.Lines.Add(logMessage);
-       logMessage := logHelper.generateLogMessage('NewTelemarketing','Exception message = '+E.Message);
-       eventLogMemo.Lines.Add(logMessage);
-     end;
-   end;
-
+  except
+    on E : Exception do
+      begin
+          logMessage := logHelper.generateLogMessage('Telemarketing',E.ClassName+' '+E.Message);
+          eventLogMemo.Lines.Add(logMessage);
+      end;
+    end;
 end;
 
 function TForm1.createtable:Integer;
@@ -348,6 +377,16 @@ begin
 
 
     end;
+end;
+
+procedure TForm1.CheckListBox1ClickCheck(Sender: TObject);
+begin
+  if CheckListBox1.Checked[CheckListBox1.ItemIndex] then
+  begin
+    SelectedList.Add(CheckListBox1.ItemIndex) ;
+  end
+  else
+      SelectedList.Remove(CheckListBox1.ItemIndex)  ;
 end;
 
 function TForm1.checktable:Integer;
@@ -401,37 +440,9 @@ begin
     try
 
       entityid := StrtoInt(IniReader.ServiceEntityID);
-      dbModule := TDataModule2.Create(nil);
-    //  IniReader := IniReaderHelper.Create;
-    // dbconnectmodel :=dbModule.connectDB(IniReader.Server,IniReader.Port,IniReader.Database,IniReader.User_Name,IniReader.Password);
-    try
-      dbModule.qryCallback.SQL.Text := 'SELECT count(*) cnt FROM system_parameters where parmname=''entity_default_categoryID''';
-      dbModule.qryCallback.Open;
-      dbModule.qryCallback.First;
-      var defaultcount :=0;
-      while not dbModule.qryCallback.eof do
-      begin
-        defaultcount := dbModule.qryCallback.FieldByName('cnt').AsInteger;
-        dbModule.qryCallback.Next;
-      end;
-      if (defaultcount=0) then
-      begin
-        dbModule.mysqlConnection.ExecSQL('insert into system_parameters (parmvalue,parmname) values (0, ''entity_default_categoryID'')');
-      end;
 
 
-    except
-      on E : Exception do
-        begin
-         logMessage := logHelper.generateLogMessage('ThreadEntityAdd1',E.ClassName+' '+E.Message);
-          Form1.eventLogMemo.Lines.Add(logMessage);
-
-        end;
-    end;
-
-      dbModule.mysqlConnection.ExecSQL('update system_parameters set parmvalue='+IniReader.ServiceCategoryID+' where parmname=''entity_default_categoryID''');
-        EntityAddresponse :=null;
-         (Form1.HTTPRIO1 as  IBusinessAPI).Entity_Add(
+        EntityAddresponse := (Form1.HTTPRIO1 as  IBusinessAPI).Entity_Add(
             entityid,
             IniReader.ServiceUsername,
             IniReader.Password,
@@ -446,14 +457,14 @@ begin
             IniReader.ServiceCountryISO,
             0 ) ;
 
-
-      dbModule.mysqlConnection.ExecSQL('update system_parameters set parmvalue=0 where parmname=''entity_default_categoryID''');
         var responseObj := TJson.JsonToObject<TResponseModel>(EntityAddresponse);
         if (responseObj.ResultCode = 0) then
         begin
           strValue := 'Entity had been created sucessfully. New Entity ID: '+inttostr(responseObj.EntityId);
-        logMessage := logHelper.generateLogMessage('ThreadEntityAdd',strValue);
-        Form1.eventLogMemo.Lines.Add(logMessage);
+          logMessage := logHelper.generateLogMessage('ThreadEntityAdd',strValue);
+          Form1.eventLogMemo.Lines.Add(logMessage);
+          entityList.Add(responseObj.EntityId);
+          Form1.CheckListBox1.Items.Add(FNewStr)
         end
         else
         begin
@@ -461,13 +472,15 @@ begin
           logMessage := logHelper.generateLogMessage('ThreadEntityAdd',strValue);
           Form1.eventLogMemo.Lines.Add(logMessage);
         end;
+
       except
          on E : Exception do
         begin
-          logMessage := logHelper.generateLogMessage('ThreadEntityAdd',E.ClassName+' '+E.Message);
+          logMessage := logHelper.generateLogMessage('ThreadEntityAdd11',E.ClassName+' '+E.Message);
           Form1.eventLogMemo.Lines.Add(logMessage);
 
         end;
+
       end;
   end
   else
