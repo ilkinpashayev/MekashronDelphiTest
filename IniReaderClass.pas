@@ -17,6 +17,7 @@ type IniReaderHelper = class
       ServiceBusinessID : string;
       ServiceCountryISO : string;
       ServiceCategoryID : string;
+      ServiceCompaignID        : string;
       Wsdl     : string;
     Constructor Create; overload;
   end;
@@ -38,6 +39,7 @@ var
   ServiceBusinessIDIni : string;
   ServiceCountryISOIni : string;
   ServiceCategoryIDIni : string;
+  ServiceCompaignIDIni        : string;
   WsdlIni     : string;
   appINI : TIniFile;
   serviceINI : TIniFile;
@@ -53,6 +55,7 @@ begin
   ServiceBusinessIDIni :='';
   ServiceCountryISOIni := '';
   ServiceCategoryIDIni :='';
+  ServiceCompaignIDIni :='';
 
 
   WsdlIni     :='';
@@ -72,6 +75,7 @@ begin
      ServiceBusinessIDIni :=serviceINI.ReadString('Param','BusinessID','');
      ServiceCountryISOIni := serviceINI.ReadString('Param','CountryISO','');
      ServiceCategoryIDIni :=serviceINI.ReadString('Param','CategoryID','');
+     ServiceCompaignIDIni :=serviceINI.ReadString('Param','CompaignID','');
      WsdlIni     := serviceINI.ReadString('Param','Wsdl','');
 
   finally
@@ -84,12 +88,14 @@ begin
   User_Name:= UserNameIni;
   Password := PasswordIni;
 
+
   ServiceEntityID := ServiceEntityIDIni;
   ServiceUsername :=ServiceUsernameIni;
   ServicePassword  :=ServicePasswordIni;
   ServiceBusinessID :=ServiceBusinessIDIni;
   ServiceCountryISO :=ServiceCountryISOIni;
   ServiceCategoryID :=ServiceCategoryIDIni;
+  ServiceCompaignID := ServiceCompaignIDIni;
   Wsdl     := WsdlIni;
 
 end;

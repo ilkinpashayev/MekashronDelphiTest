@@ -80,7 +80,7 @@ object Form1: TForm1
   end
   object TelemarketingAddButton: TButton
     Left = 170
-    Top = 10
+    Top = 9
     Width = 131
     Height = 31
     Margins.Left = 4

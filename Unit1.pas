@@ -319,7 +319,7 @@ begin
         entityid,
         IniReader.ServiceUsername,
         IniReader.ServicePassword,
-        0,
+        strtoint(IniReader.ServiceCompaignID),
         users
       );
       var responseObj := TJson.JsonToObject<TTelemarketingResponseModel>(TelemarketingAddresponse);
@@ -383,10 +383,10 @@ procedure TForm1.CheckListBox1ClickCheck(Sender: TObject);
 begin
   if CheckListBox1.Checked[CheckListBox1.ItemIndex] then
   begin
-    SelectedList.Add(CheckListBox1.ItemIndex) ;
+    SelectedList.Add(entityList[CheckListBox1.ItemIndex]) ;
   end
   else
-      SelectedList.Remove(CheckListBox1.ItemIndex)  ;
+      SelectedList.Remove(entityList[CheckListBox1.ItemIndex])  ;
 end;
 
 function TForm1.checktable:Integer;
@@ -441,29 +441,6 @@ begin
 
       entityid := StrtoInt(IniReader.ServiceEntityID);
 
-             {<ol_EntityId xsi:type="xsd:int">1</ol_EntityId>
-         <ol_UserName xsi:type="xsd:string">admin</ol_UserName>
-         <ol_Password xsi:type="xsd:string">admin</ol_Password>
-         <BusinessId xsi:type="xsd:int">1</BusinessId>
-         <Employee_EntityId xsi:type="xsd:int">2</Employee_EntityId>
-         <CategoryID xsi:type="xsd:int">12</CategoryID>
-         <Password xsi:type="xsd:string">admin</Password>
-         <Mobile xsi:type="xsd:string">3</Mobile>
-         <CountryISO xsi:type="xsd:string">IL</CountryISO>
-         <affiliate_entityID xsi:type="xsd:int">0</affiliate_entityID>
-      const ol_EntityId: Integer;
-      const ol_UserName: string; c
-      onst ol_Password: string;
-       const BusinessId: Integer;
-        const Employee_EntityId: Integer;
-         const CategoryID: Integer;
-                         const Email: string;
-                         const Password: string;
-                         const FirstName: string;
-                         const LastName: string;
-                         const Mobile: string;
-                         const CountryISO: string;
-                         const affiliate_entityID: Integer }
         EntityAddresponse := (Form1.HTTPRIO1 as  IBusinessAPI).Entity_Add(
             entityid,
             IniReader.ServiceUsername,
